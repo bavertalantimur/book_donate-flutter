@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "197191556022",
+    "project_id": "book-donate-firebase",
+    "storage_bucket": "book-donate-firebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:197191556022:android:0b5a805f32901c61c0bf17",
+        "android_client_info": {
+          "package_name": "com.example.flutter_test_application"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbo8knObWy1WD5tKrFSs5womgh34Wh4Zs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
