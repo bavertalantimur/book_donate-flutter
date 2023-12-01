@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
   final firebaseAuth = FirebaseAuth.instance;
+  final firebaseFirestore = FirebaseFirestore.instance;
   Future signInAnonymous() async {
     try {
       final result = await firebaseAuth.signInAnonymously();
@@ -64,7 +66,14 @@ class AuthService {
       final result = await firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
 
-      // firesabe collection create user
+      try {
+        final resultData = await firebaseFirestore
+            .collection("Users")
+            .doc(name)
+            .set({"email": email, "name": name, "lastname": lastName});
+      } catch (e) {
+        print(e.toString());
+      }
 
       res = "success";
     } on FirebaseAuthException catch (e) {

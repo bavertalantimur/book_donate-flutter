@@ -91,6 +91,8 @@ class _SignUpState extends State<SignUp> {
 
       print(email + password);
       final result = await authService.signUp(email, password, name, lastName);
+
+      // firebasecollection
       if (result == "success") {
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => HomePage()),

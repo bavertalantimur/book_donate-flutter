@@ -1,3 +1,4 @@
+import 'package:flutter_test_application/forgot_pw_page.dart';
 import 'package:flutter_test_application/home_page.dart';
 import 'package:flutter_test_application/login_page.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,8 @@ class MyApp extends StatelessWidget {
       routes: {
         "/loginPage": (context) => LoginPage(),
         "/signUp": (context) => SignUp(),
-        "/homePage": (context) => HomePage()
+        "/homePage": (context) => HomePage(),
+        "/forgotPassword": (context) => ForgotPasswordPage()
       },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

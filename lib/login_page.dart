@@ -157,7 +157,7 @@ class _LoginPageState extends State<LoginPage> {
 
   TextButton forgotPasswordButton() {
     return TextButton(
-      onPressed: () {},
+      onPressed: () => Navigator.pushNamed(context, "/forgotPassword"),
       child: Text(
         "Şifremi Unuttum",
         style: TextStyle(color: Colors.pink[300]),
