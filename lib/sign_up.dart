@@ -94,9 +94,7 @@ class _SignUpState extends State<SignUp> {
 
       // firebasecollection
       if (result == "success") {
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => HomePage()),
-            (route) => false);
+        Navigator.pushNamed(context, '/homeScreen');
       } else {
         showDialog(
             context: context,

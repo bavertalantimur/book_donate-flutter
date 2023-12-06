@@ -1,9 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_test_application/config/app_router.dart';
 import 'package:flutter_test_application/forgot_pw_page.dart';
 import 'package:flutter_test_application/home_page.dart';
 import 'package:flutter_test_application/login_page.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_test_application/screens/home/home_screen.dart';
 import 'package:flutter_test_application/sign_up.dart';
 import 'firebase_options.dart';
 
@@ -27,14 +30,24 @@ class MyApp extends StatelessWidget {
         "/loginPage": (context) => LoginPage(),
         "/signUp": (context) => SignUp(),
         "/homePage": (context) => HomePage(),
-        "/forgotPassword": (context) => ForgotPasswordPage()
+        "/forgotPassword": (context) => ForgotPasswordPage(),
+        "/homeScreen": (context) => HomeScreen()
       },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: Scaffold(
-        body: LoginPage(),
+      onGenerateRoute: AppRouter.onGenerateRoute,
+      initialRoute: HomeScreen.routeName,
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (ctx, snapshot) {
+          if (snapshot.hasData) {
+            return HomeScreen();
+          } else {
+            return LoginPage();
+          }
+        },
       ),
     );
   }

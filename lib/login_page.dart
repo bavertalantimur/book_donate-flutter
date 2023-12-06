@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test_application/home_page.dart';
+import 'package:flutter_test_application/screens/screens.dart';
 import 'package:flutter_test_application/service/auth_service.dart';
 import 'package:flutter_test_application/widgets/custom_text_button.dart';
 
@@ -52,8 +53,7 @@ class _LoginPageState extends State<LoginPage> {
                           onPressed: () async {
                             final result = await authService.signInAnonymous();
                             if (result != null) {
-                              Navigator.pushReplacementNamed(
-                                  context, "/homePage");
+                              Navigator.pushNamed(context, '/homeScreen');
                             } else {
                               print("Hata ile karsilasildi");
                             }
@@ -135,7 +135,7 @@ class _LoginPageState extends State<LoginPage> {
       final result = await authService.signIn(email, password);
       if (result == "success") {
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => HomePage()),
+            MaterialPageRoute(builder: (context) => HomeScreen()),
             (route) => false);
       } else {
         showDialog(
