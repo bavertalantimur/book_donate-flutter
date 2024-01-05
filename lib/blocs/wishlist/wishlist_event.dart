@@ -7,7 +7,10 @@ abstract class WishlistEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class StartWishList extends WishlistEvent {}
+class StartWishList extends WishlistEvent {
+  @override
+  List<Object> get props => [];
+}
 
 class AddWishListProduct extends WishlistEvent {
   final Product product;

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_test_application/blocs/cart/cart_bloc.dart';
 
 import '../models/product_model.dart';
 
 class CartProductCard extends StatelessWidget {
   final Product product;
+  final int quantity;
 
-  const CartProductCard({super.key, required this.product});
+  const CartProductCard(
+      {super.key, required this.product, required this.quantity});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +32,7 @@ class CartProductCard extends StatelessWidget {
               children: [
                 Text(
                   product.name,
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 ),
                 Text(
                   '\$${product.price}',
@@ -38,18 +42,34 @@ class CartProductCard extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 10),
-          Row(
-            children: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.remove_circle),
-              ),
-              const Text('1'),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.add_circle),
-              )
-            ],
+          BlocBuilder<CartBloc, CartState>(
+            builder: (context, state) {
+              if (state is CartLoading) {
+                return CircularProgressIndicator();
+              }
+              if (state is CartLoaded) {
+                return Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        context
+                            .read<CartBloc>()
+                            .add(CartProductRemoved(product));
+                      },
+                      icon: const Icon(Icons.remove_circle),
+                    ),
+                    Text('$quantity'),
+                    IconButton(
+                      onPressed: () {
+                        context.read<CartBloc>().add(CartProductAdded(product));
+                      },
+                      icon: const Icon(Icons.add_circle),
+                    )
+                  ],
+                );
+              }
+              return Text('Something went Wrong');
+            },
           )
         ],
       ),

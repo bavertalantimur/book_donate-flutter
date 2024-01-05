@@ -1,9 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class Product extends Equatable {
   final String name;
   final String category;
-  final double price;
+  final String price;
   /*final String publicationYear;
   final String publisher;
   final String numberPage;
@@ -12,7 +13,7 @@ class Product extends Equatable {
   final bool isRecommended;
   final bool isPopular;
 
-  Product(
+  const Product(
       {required this.name,
       required this.category,
       required this.price,
@@ -38,30 +39,40 @@ class Product extends Equatable {
         isRecommended,
         isPopular,
       ];
+  static Product fromSnapshot(DocumentSnapshot snap) {
+    Product product = Product(
+        name: snap['name'],
+        category: snap['category'],
+        price: snap['price'],
+        imageUrl: snap['imageUrl'],
+        isRecommended: snap['isRecommended'],
+        isPopular: snap['isPopular']);
+    return product;
+  }
 
   static List<Product> products = [
     Product(
         name: 'acil mat',
         category: 'YKS',
-        price: 300,
+        price: "300",
         imageUrl:
             'https://pegem.net/uploads/p/p/2024-Ales-Soru-Bankasi_1.jpg?v=1683111599',
         isRecommended: true,
-        isPopular: false),
+        isPopular: true),
     Product(
         name: 'acil mat',
         category: 'YKS',
         imageUrl:
             'https://pegem.net/uploads/p/p/2024-Ales-Soru-Bankasi_1.jpg?v=1683111599',
-        price: 600,
+        price: "600",
         isRecommended: true,
         isPopular: false),
     Product(
-        name: 'acil mat',
+        name: 'Soru',
         category: 'ALES',
         imageUrl:
-            'https://pegem.net/uploads/p/p/2024-Ales-Soru-Bankasi_1.jpg?v=1683111599',
-        price: 400,
+            'https://productimages.hepsiburada.net/s/43/375-375/10769323524146.jpg',
+        price: "400",
         isRecommended: true,
         isPopular: false)
   ];

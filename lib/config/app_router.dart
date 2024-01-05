@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test_application/home_page.dart';
 import 'package:flutter_test_application/models/models.dart';
 import 'package:flutter_test_application/screens/screens.dart';
 
@@ -14,10 +13,14 @@ class AppRouter {
         return CartScreen.route();
       case ProductScreen.routeName:
         return ProductScreen.route(product: settings.arguments as Product);
+      case SplashScreen.routeName:
+        return SplashScreen.route();
       case WishListScreen.routeName:
         return WishListScreen.route();
       case CatalogScreen.routeName:
         return CatalogScreen.route(category: settings.arguments as Category);
+      case CheckoutScreen.routeName;
+        return CheckoutScreen.route();  
       default:
         return _errorRoute();
     }

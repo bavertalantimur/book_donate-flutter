@@ -7,7 +7,10 @@ abstract class WishlistState extends Equatable {
   List<Object> get props => [];
 }
 
-class WishlistLoading extends WishlistState {}
+class WishlistLoading extends WishlistState {
+  @override
+  List<Object> get props => [];
+}
 
 class WishlistLoaded extends WishlistState {
   final WishList wishList;

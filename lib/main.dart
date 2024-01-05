@@ -1,16 +1,22 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_test_application/blocs/cart/cart_bloc.dart';
 import 'package:flutter_test_application/blocs/wishlist/wishlist_bloc.dart';
 import 'package:flutter_test_application/config/app_router.dart';
 import 'package:flutter_test_application/forgot_pw_page.dart';
 import 'package:flutter_test_application/home_page.dart';
 import 'package:flutter_test_application/login_page.dart';
 import 'package:flutter/material.dart';
-import 'dart:ui';
+
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_test_application/screens/home/home_screen.dart';
+import 'package:flutter_test_application/screens/screens.dart';
 import 'package:flutter_test_application/sign_up.dart';
+import 'blocs/category/category_bloc.dart';
+import 'blocs/product/product_bloc.dart';
 import 'firebase_options.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'repositories/category/category_repository.dart';
+import 'repositories/product/product_repository.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,6 +35,17 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => WishlistBloc()..add(StartWishList())),
+        BlocProvider(create: (_) => CartBloc()..add(CartStarted())),
+        BlocProvider(
+          create: (_) => CategoryBloc(
+            categoryRepository: CategoryRepository(),
+          )..add(LoadCategories()),
+        ),
+        BlocProvider(
+          create: (_) => ProductBloc(
+            productRepository: ProductRepository(),
+          )..add(LoadProducts()),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

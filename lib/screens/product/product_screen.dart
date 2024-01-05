@@ -3,6 +3,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_test_application/blocs/cart/cart_bloc.dart';
 import 'package:flutter_test_application/blocs/wishlist/wishlist_bloc.dart';
 import 'package:flutter_test_application/widgets/custom_appbar.dart';
 
@@ -56,13 +57,24 @@ class ProductScreen extends StatelessWidget {
                   );
                 },
               ),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(primary: Colors.white),
-                  onPressed: () {},
-                  child: Text(
-                    'Add to cart',
-                    style: Theme.of(context).textTheme.headline5,
-                  ))
+              BlocBuilder<CartBloc, CartState>(
+                builder: (context, state) {
+                  return ElevatedButton(
+                      style: ElevatedButton.styleFrom(primary: Colors.white),
+                      onPressed: () {
+                        context.read<CartBloc>().add(CartProductAdded(product));
+
+                        final snackBar =
+                            SnackBar(content: Text('Added to your Cart'));
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        Navigator.pushNamed(context, '/cart');
+                      },
+                      child: Text(
+                        'Add to cart',
+                        style: Theme.of(context).textTheme.headline5,
+                      ));
+                },
+              )
             ],
           ),
         ),
