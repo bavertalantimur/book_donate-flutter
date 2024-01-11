@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test_application/blocs/cart/cart_bloc.dart';
+import 'package:flutter_test_application/blocs/checkout/checkout_bloc.dart';
 import 'package:flutter_test_application/blocs/wishlist/wishlist_bloc.dart';
 import 'package:flutter_test_application/config/app_router.dart';
 import 'package:flutter_test_application/forgot_pw_page.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_test_application/login_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_test_application/repositories/checkout/checkout_repository.dart';
 import 'package:flutter_test_application/screens/screens.dart';
 import 'package:flutter_test_application/sign_up.dart';
 import 'blocs/category/category_bloc.dart';
@@ -45,6 +47,12 @@ class MyApp extends StatelessWidget {
           create: (_) => ProductBloc(
             productRepository: ProductRepository(),
           )..add(LoadProducts()),
+        ),
+        BlocProvider(
+          create: (context) => CheckoutBloc(
+            cartBloc: context.read<CartBloc>(),
+            checkoutRepository: CheckoutRepository(),
+          ),
         ),
       ],
       child: MaterialApp(
