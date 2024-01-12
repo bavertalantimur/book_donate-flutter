@@ -10,13 +10,14 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_test_application/repositories/checkout/checkout_repository.dart';
+import 'package:flutter_test_application/screens/admin/admin_product_screen.dart';
 import 'package:flutter_test_application/screens/screens.dart';
 import 'package:flutter_test_application/sign_up.dart';
 import 'blocs/category/category_bloc.dart';
 import 'blocs/product/product_bloc.dart';
 import 'firebase_options.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:get/get.dart';
 import 'repositories/category/category_repository.dart';
 import 'repositories/product/product_repository.dart';
 
@@ -57,18 +58,23 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
+
         routes: {
           "/loginPage": (context) => LoginPage(),
           "/signUp": (context) => SignUp(),
           "/homePage": (context) => HomePage(),
           "/forgotPassword": (context) => ForgotPasswordPage(),
-          "/homeScreen": (context) => HomeScreen()
+          "/homeScreen": (context) => HomeScreen(),
+          "/adminScreen": (context) => AdminScreen()
         },
+
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
         onGenerateRoute: AppRouter.onGenerateRoute,
+        //*initialRoute: "/loginPage",
+
         initialRoute: HomeScreen.routeName,
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),

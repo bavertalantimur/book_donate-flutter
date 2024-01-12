@@ -39,6 +39,7 @@ class CheckoutScreen extends StatelessWidget {
                         context
                             .read<CheckoutBloc>()
                             .add(ConfirmCheckout(checkout: state.checkout));
+                        Navigator.pushNamed(context, '/order-confirmation');
                       },
                       child: const Text('OrderNow',
                           style: TextStyle(

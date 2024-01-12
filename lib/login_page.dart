@@ -59,6 +59,16 @@ class _LoginPageState extends State<LoginPage> {
                             }
                           },
                           buttonText: "Misafir Girisi"),
+                      CustomTextButton(
+                          onPressed: () async {
+                            final result = await authService.signInAnonymous();
+                            if (result != null) {
+                              Navigator.pushNamed(context, '/adminScreen');
+                            } else {
+                              print("Hata ile karsilasildi");
+                            }
+                          },
+                          buttonText: "Admin Girisi"),
                     ],
                   ),
                 ),
