@@ -6,3 +6,5 @@ export 'product/product_screen.dart';
 export 'splash/splash_screen.dart';
 export 'checkout/checkout_screen.dart';
 export 'admin/admin_screen.dart';
+export 'drawer/drawer.dart';
+export 'profile/profile_screen.dart';

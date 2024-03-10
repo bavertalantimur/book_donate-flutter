@@ -59,18 +59,22 @@ class AuthService {
     return res;
   }
 
-  Future<String?> signUp(
-      String email, String password, String name, String lastName) async {
+  Future<String?> signUp(String email, String password, String name,
+      String lastName, bool isAdmin) async {
     String? res;
     try {
       final result = await firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
 
       try {
-        final resultData = await firebaseFirestore
-            .collection("Users")
-            .doc(name)
-            .set({"email": email, "name": name, "lastname": lastName});
+        final resultData =
+            await firebaseFirestore.collection("Users").doc(name).set({
+          "email": email,
+          "name": name,
+          "lastname": lastName,
+          "password": password,
+          "isAdmin": isAdmin,
+        });
       } catch (e) {
         print(e.toString());
       }

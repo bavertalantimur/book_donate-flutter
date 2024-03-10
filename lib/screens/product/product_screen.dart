@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -60,7 +58,7 @@ class ProductScreen extends StatelessWidget {
               BlocBuilder<CartBloc, CartState>(
                 builder: (context, state) {
                   return ElevatedButton(
-                      style: ElevatedButton.styleFrom(primary: Colors.white),
+                      style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
                       onPressed: () {
                         context.read<CartBloc>().add(CartProductAdded(product));
 

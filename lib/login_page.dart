@@ -14,6 +14,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   late String email, password;
+
   final formkey = GlobalKey<FormState>();
   final firebaseAuth = FirebaseAuth.instance;
   final authService = AuthService();
@@ -138,6 +139,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+//// HomeScreen yapılacak
   void signIn() async {
     if (formkey.currentState!.validate()) {
       formkey.currentState!.save();
@@ -145,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
       final result = await authService.signIn(email, password);
       if (result == "success") {
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => HomeScreen()),
+            MaterialPageRoute(builder: (context) => ProfileScreen()),
             (route) => false);
       } else {
         showDialog(

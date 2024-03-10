@@ -13,6 +13,7 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   late String email, password, name, lastName;
+  late bool isAdmin = false;
   final formkey = GlobalKey<FormState>();
   final firebaseAuth = FirebaseAuth.instance;
   final authService = AuthService();
@@ -90,7 +91,8 @@ class _SignUpState extends State<SignUp> {
       });
 
       print(email + password);
-      final result = await authService.signUp(email, password, name, lastName);
+      final result =
+          await authService.signUp(email, password, name, lastName, isAdmin);
 
       // firebasecollection
       if (result == "success") {

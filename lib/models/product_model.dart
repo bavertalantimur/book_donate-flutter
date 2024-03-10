@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 class Product extends Equatable {
   final String name;
   final String category;
-  final String price;
+  final double price;
   /*final String publicationYear;
   final String publisher;
   final String numberPage;
@@ -54,7 +54,7 @@ class Product extends Equatable {
     Product(
         name: 'acil mat',
         category: 'YKS',
-        price: "300",
+        price: 30.4,
         imageUrl:
             'https://pegem.net/uploads/p/p/2024-Ales-Soru-Bankasi_1.jpg?v=1683111599',
         isRecommended: true,
@@ -64,7 +64,7 @@ class Product extends Equatable {
         category: 'YKS',
         imageUrl:
             'https://pegem.net/uploads/p/p/2024-Ales-Soru-Bankasi_1.jpg?v=1683111599',
-        price: "600",
+        price: 20.4,
         isRecommended: true,
         isPopular: false),
     Product(
@@ -72,7 +72,7 @@ class Product extends Equatable {
         category: 'ALES',
         imageUrl:
             'https://productimages.hepsiburada.net/s/43/375-375/10769323524146.jpg',
-        price: "400",
+        price: 20.5,
         isRecommended: true,
         isPopular: false)
   ];

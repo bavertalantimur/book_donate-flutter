@@ -58,20 +58,20 @@ class OrderConfirmation extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Hi Massimo,',
+                  Text('Hi Baver,',
                       style: Theme.of(context)
                           .textTheme
                           .headline5!
                           .copyWith(fontSize: 18)),
                   SizedBox(height: 10),
-                  Text('Thank you for purchasing on Zero To Unicorn.',
+                  Text('Thank you for order.',
                       style: Theme.of(context)
                           .textTheme
                           .headline6!
                           .copyWith(fontSize: 18)),
                   SizedBox(height: 20),
                   Text(
-                    'ORDER CODE: #k321-ekd3',
+                    'ORDER CODE: 123456',
                     style: Theme.of(context)
                         .textTheme
                         .headline5!

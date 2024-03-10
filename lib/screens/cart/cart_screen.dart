@@ -33,7 +33,7 @@ class CartScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ElevatedButton(
-                style: ElevatedButton.styleFrom(primary: Colors.white),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
                 onPressed: () {
                   Navigator.pushNamed(context, '/checkout');
                 },
@@ -75,7 +75,7 @@ class CartScreen extends StatelessWidget {
                               Navigator.pushNamed(context, '/');
                             },
                             style: ElevatedButton.styleFrom(
-                                primary: Colors.black,
+                                backgroundColor: Colors.black,
                                 shape: const RoundedRectangleBorder(),
                                 elevation: 0),
                             child: Text(

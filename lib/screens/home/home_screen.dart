@@ -1,13 +1,12 @@
 // ignore_for_file: deprecated_member_use
 
-import 'dart:math';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test_application/blocs/category/category_bloc.dart';
 
 import 'package:flutter_test_application/models/models.dart';
+import 'package:flutter_test_application/screens/screens.dart';
 
 import 'package:flutter_test_application/widgets/widgets.dart';
 
@@ -23,10 +22,25 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
+  void goToProfilePage() {
+    /* Navigator.pop(
+      context,
+    );
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ProfileScreen(),
+      ),
+    );*/
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: 'Home'),
+      drawer: MyDrawer(
+        onProfileTap: goToProfilePage,
+      ),
       bottomNavigationBar: CustomNavBar(),
       body: SingleChildScrollView(
         child: Column(

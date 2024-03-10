@@ -65,7 +65,8 @@ class MyApp extends StatelessWidget {
           "/homePage": (context) => HomePage(),
           "/forgotPassword": (context) => ForgotPasswordPage(),
           "/homeScreen": (context) => HomeScreen(),
-          "/adminScreen": (context) => AdminScreen()
+          "/adminScreen": (context) => AdminScreen(),
+          "/profilPage": (context) => ProfileScreen()
         },
 
         theme: ThemeData(
@@ -73,9 +74,10 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         onGenerateRoute: AppRouter.onGenerateRoute,
-        //*initialRoute: "/loginPage",
+        initialRoute: "/loginPage",
+        //initialRoute: "/profilPage",
 
-        initialRoute: HomeScreen.routeName,
+        //initialRoute: HomeScreen.routeName,
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (ctx, snapshot) {
