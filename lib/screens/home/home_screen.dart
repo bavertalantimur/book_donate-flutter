@@ -22,20 +22,20 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  void goToProfilePage() {
-    /* Navigator.pop(
-      context,
-    );
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ProfileScreen(),
-      ),
-    );*/
-  }
-
   @override
   Widget build(BuildContext context) {
+    void goToProfilePage() {
+      Navigator.pop(
+        context,
+      );
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProfileScreen(),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: CustomAppBar(title: 'Home'),
       drawer: MyDrawer(

@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_test_application/service/auth_service.dart';
 
 class CustomNavBar extends StatelessWidget {
   const CustomNavBar({
@@ -33,6 +35,7 @@ class CustomNavBar extends StatelessWidget {
           IconButton(
               onPressed: () async {
                 await FirebaseAuth.instance.signOut();
+                //Navigator.pushNamed(context, '/loginPage');
               },
               icon: Icon(Icons.exit_to_app, color: Colors.white)),
         ],

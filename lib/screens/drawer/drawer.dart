@@ -29,7 +29,7 @@ class MyDrawer extends StatelessWidget {
               MyListTile(
                 icon: Icons.person,
                 text: 'P R O F I L E',
-                onTap: () => Navigator.pop(context),
+                onTap: onProfileTap,
               ),
             ],
           ),

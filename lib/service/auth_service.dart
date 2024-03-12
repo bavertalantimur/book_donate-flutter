@@ -68,7 +68,7 @@ class AuthService {
 
       try {
         final resultData =
-            await firebaseFirestore.collection("Users").doc(name).set({
+            await firebaseFirestore.collection("Users").doc(email).set({
           "email": email,
           "name": name,
           "lastname": lastName,
