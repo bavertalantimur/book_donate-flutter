@@ -87,12 +87,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
           TextButton(
             onPressed: () async {
               if (isPassword) {
-                String password = _passwordController.text.trim();
-                newValue = _newPasswordController.text.trim();
+                String currentPassword = _passwordController.text.trim();
+                String newPassword = _newPasswordController.text.trim();
                 String confirmPassword = _confirmPasswordController.text.trim();
 
-                if (password.isEmpty ||
-                    newValue.isEmpty ||
+                if (currentPassword.isEmpty ||
+                    newPassword.isEmpty ||
                     confirmPassword.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text("All fields are required"),
@@ -100,7 +100,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   return;
                 }
 
-                if (newValue != confirmPassword) {
+                if (newPassword != confirmPassword) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text("Passwords do not match"),
                   ));
@@ -108,18 +108,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 }
 
                 try {
-                  await currentUser.updatePassword(newValue);
+                  // Reauthenticate user with current password
+                  AuthCredential credential = EmailAuthProvider.credential(
+                    email: currentUser.email!,
+                    password: currentPassword,
+                  );
+                  await currentUser.reauthenticateWithCredential(credential);
+
+                  // Update password in Firebase Authentication
+                  await currentUser.updatePassword(newPassword);
+
+                  // Update password in Firestore
                   await userCollection
                       .doc(currentUser.email)
-                      .update({'password': newValue});
+                      .update({'password': newPassword});
+
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text("Password updated successfully"),
                   ));
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content:
-                        Text("Failed to update password. Please try again."),
+                    content: Text(
+                        "Failed to update password. Please check your current password and try again."),
                   ));
                 }
               } else {

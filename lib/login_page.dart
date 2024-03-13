@@ -147,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
       final result = await authService.signIn(email, password);
       if (result == "success") {
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => ProfileScreen()),
+            MaterialPageRoute(builder: (context) => HomeScreen()),
             (route) => false);
       } else {
         showDialog(
