@@ -1,11 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test_application/widgets/profile_text_box.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  const ProfileScreen({Key? key}) : super(key: key);
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -15,27 +14,68 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final currentUser = FirebaseAuth.instance.currentUser!;
   final userCollection = FirebaseFirestore.instance.collection("Users");
 
+  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _newPasswordController = TextEditingController();
+  TextEditingController _confirmPasswordController = TextEditingController();
+
   Future<void> editField(String field) async {
     String newValue = "";
+    bool isPassword = field == 'password';
+
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: Colors.grey[900],
         title: Text(
-          "Edit  $field",
+          "Edit ${isPassword ? 'password' : field}",
           style: TextStyle(color: Colors.white),
         ),
-        content: TextField(
-          autofocus: true,
-          style: TextStyle(color: Colors.white),
-          decoration: InputDecoration(
-            hintText: "Enter new $field",
-            hintStyle: TextStyle(color: Colors.grey),
-          ),
-          onChanged: (value) {
-            newValue = value;
-          },
-        ),
+        content: isPassword
+            ? Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    controller: _passwordController,
+                    obscureText: true,
+                    style: TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      hintText: "Enter current password",
+                      hintStyle: TextStyle(color: Colors.grey),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  TextField(
+                    controller: _newPasswordController,
+                    obscureText: true,
+                    style: TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      hintText: "Enter new password",
+                      hintStyle: TextStyle(color: Colors.grey),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  TextField(
+                    controller: _confirmPasswordController,
+                    obscureText: true,
+                    style: TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      hintText: "Confirm new password",
+                      hintStyle: TextStyle(color: Colors.grey),
+                    ),
+                  ),
+                ],
+              )
+            : TextField(
+                autofocus: true,
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  hintText: "Enter new $field",
+                  hintStyle: TextStyle(color: Colors.grey),
+                ),
+                onChanged: (value) {
+                  newValue = value;
+                },
+              ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -45,7 +85,59 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           TextButton(
-            onPressed: () => Navigator.of(context).pop(newValue),
+            onPressed: () async {
+              if (isPassword) {
+                String password = _passwordController.text.trim();
+                newValue = _newPasswordController.text.trim();
+                String confirmPassword = _confirmPasswordController.text.trim();
+
+                if (password.isEmpty ||
+                    newValue.isEmpty ||
+                    confirmPassword.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("All fields are required"),
+                  ));
+                  return;
+                }
+
+                if (newValue != confirmPassword) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("Passwords do not match"),
+                  ));
+                  return;
+                }
+
+                try {
+                  await currentUser.updatePassword(newValue);
+                  await userCollection
+                      .doc(currentUser.email)
+                      .update({'password': newValue});
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("Password updated successfully"),
+                  ));
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content:
+                        Text("Failed to update password. Please try again."),
+                  ));
+                }
+              } else {
+                if (newValue.trim().isNotEmpty) {
+                  try {
+                    await userCollection
+                        .doc(currentUser.email)
+                        .update({field: newValue});
+                    Navigator.pop(context);
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content:
+                          Text("Failed to update $field. Please try again."),
+                    ));
+                  }
+                }
+              }
+            },
             child: Text(
               'Save',
               style: TextStyle(color: Colors.white),
@@ -54,9 +146,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ],
       ),
     );
-    if (newValue.trim().length > 0) {
-      await userCollection.doc(currentUser.email).update({field: newValue});
-    }
   }
 
   @override
@@ -110,7 +199,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   onPressed: () => editField('lastname'),
                 ),
                 ProfileTextBox(
-                  text: userData['password'],
+                  text: userData[
+                      'password'], // Just for indication that password is hidden
                   name: 'password',
                   onPressed: () => editField('password'),
                 )
