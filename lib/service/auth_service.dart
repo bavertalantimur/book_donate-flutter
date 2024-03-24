@@ -65,6 +65,7 @@ class AuthService {
     try {
       final result = await firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
+      String uid = result.user!.uid;
 
       try {
         final resultData =
@@ -74,6 +75,7 @@ class AuthService {
           "lastname": lastName,
           "password": password,
           "isAdmin": isAdmin,
+          "uid": uid,
         });
       } catch (e) {
         print(e.toString());

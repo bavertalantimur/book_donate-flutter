@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test_application/blocs/cart/cart_bloc.dart';
 import 'package:flutter_test_application/blocs/wishlist/wishlist_bloc.dart';
+import 'package:flutter_test_application/screens/screens.dart';
 import 'package:flutter_test_application/widgets/custom_appbar.dart';
 
 import 'package:flutter_test_application/widgets/hero_carousel_card.dart';
@@ -34,9 +35,16 @@ class ProductScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ChatScreen(),
+                    ),
+                  );
+                },
                 icon: Icon(
-                  Icons.share,
+                  Icons.message,
                   color: Colors.white,
                 ),
               ),
@@ -58,7 +66,8 @@ class ProductScreen extends StatelessWidget {
               BlocBuilder<CartBloc, CartState>(
                 builder: (context, state) {
                   return ElevatedButton(
-                      style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white),
                       onPressed: () {
                         context.read<CartBloc>().add(CartProductAdded(product));
 

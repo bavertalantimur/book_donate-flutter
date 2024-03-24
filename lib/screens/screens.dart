@@ -8,3 +8,4 @@ export 'checkout/checkout_screen.dart';
 export 'admin/admin_screen.dart';
 export 'drawer/drawer.dart';
 export 'profile/profile_screen.dart';
+export 'chat/chat_screen.dart';
