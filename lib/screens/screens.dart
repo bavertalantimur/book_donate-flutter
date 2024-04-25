@@ -9,3 +9,6 @@ export 'admin/admin_screen.dart';
 export 'drawer/drawer.dart';
 export 'profile/profile_screen.dart';
 export 'chat/chat_screen.dart';
+export 'card/card_screen.dart';
+export 'card/card_form_screen.dart';
+

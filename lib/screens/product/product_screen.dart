@@ -26,7 +26,7 @@ class ProductScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: product.name),
+      appBar: CustomAppBar(title: product.category),
       bottomNavigationBar: BottomAppBar(
         color: Colors.black,
         child: Container(
@@ -152,13 +152,13 @@ class ProductScreen extends StatelessWidget {
               ),
               children: [
                 ListTile(
-                  title: Text('Lorem',
+                  title: Text('BU BİR KİTAPTİR',
                       style: Theme.of(context).textTheme.bodyText1),
                 ),
               ],
             ),
           ),
-          Padding(
+          /*  Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: ExpansionTile(
               title: Text(
@@ -173,6 +173,7 @@ class ProductScreen extends StatelessWidget {
               ],
             ),
           )
+        */
         ],
       ),
     );

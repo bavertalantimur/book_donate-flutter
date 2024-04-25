@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_application/models/models.dart';
 import 'package:flutter_test_application/screens/order_confirmation/order_confirmation_screen.dart';
+import 'package:flutter_test_application/screens/payment_selection/payment_selection_screen.dart';
 import 'package:flutter_test_application/screens/screens.dart';
 
 class AppRouter {
@@ -24,6 +25,8 @@ class AppRouter {
         return CheckoutScreen.route();
       case OrderConfirmation.routeName:
         return OrderConfirmation.route();
+      case PaymentSelection.routeName:
+        return PaymentSelection.route();
       default:
         return _errorRoute();
     }

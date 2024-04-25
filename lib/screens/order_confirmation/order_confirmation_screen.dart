@@ -93,12 +93,12 @@ class OrderConfirmation extends StatelessWidget {
                     children: [
                       OrderSummaryProductCard(
                         product: Product.products[0],
-                        quantity: 2,
+                        quantity: 3,
                       ),
-                      OrderSummaryProductCard(
+                      /*OrderSummaryProductCard(
                         product: Product.products[1],
                         quantity: 2,
-                      )
+                      )*/
                     ],
                   ),
                 ],

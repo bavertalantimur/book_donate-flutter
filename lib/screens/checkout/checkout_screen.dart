@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test_application/blocs/checkout/checkout_bloc.dart';
+import 'package:flutter_test_application/models/payment_method_model.dart';
+import 'package:flutter_test_application/screens/card/card_form_screen.dart';
 
 import '/widgets/widgets.dart';
 
@@ -28,7 +32,45 @@ class CheckoutScreen extends StatelessWidget {
               );
             }
             if (state is CheckoutLoaded) {
-              return Container(
+              if (Platform.isAndroid) {
+                switch (state.paymentMethod) {
+                  case PaymentMethod.google_pay:
+                    return GooglePay(
+                      products: state.products!,
+                      total: state.total!,
+                    );
+                  case PaymentMethod.credit_card:
+                    print("6886896969");
+                    return CardFormScreen(
+                      total: state.total!,
+                    );
+                  default:
+                    return GooglePay(
+                      products: state.products!,
+                      total: state.total!,
+                    );
+                }
+              } else if (Platform.isIOS) {
+                switch (state.paymentMethod) {
+                  case PaymentMethod.apple_pay:
+                    return ApplePay(
+                        total: state.total!, products: state.products!);
+                  case PaymentMethod.credit_card:
+                    return Container();
+
+                  default:
+                    return ApplePay(
+                        total: state.total!, products: state.products!);
+                }
+              } else {
+                return ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/payment-selection');
+                  },
+                  child: Text('CHOOSE PAYMENT'),
+                );
+              }
+              /*return Container(
                 height: 70,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -50,7 +92,7 @@ class CheckoutScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-              );
+              );*/
             } else {
               return Text('Something went  Wrong');
             }
@@ -115,6 +157,37 @@ class CheckoutScreen extends StatelessWidget {
                         .read<CheckoutBloc>()
                         .add(UpdateCheckout(zipCode: value));
                   }, context, 'Zip'),
+                  Container(
+                    height: 60,
+                    alignment: Alignment.bottomCenter,
+                    decoration: BoxDecoration(color: Colors.black),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Center(
+                          child: TextButton(
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                context,
+                                '/payment-selection',
+                              );
+                            },
+                            child: Text(
+                              'SELECT A PAYMENT METHOD',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {},
+                          icon: Icon(
+                            Icons.arrow_forward,
+                            color: Colors.white,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                   Text(
                     'Order Summary',
                     style: Theme.of(context).textTheme.headline5?.copyWith(

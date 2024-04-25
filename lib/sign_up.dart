@@ -77,7 +77,7 @@ class _SignUpState extends State<SignUp> {
       child: TextButton(
         onPressed: signUp,
         child: Text(
-          "Hesap Oluştur",
+          "Sign Up",
           style: TextStyle(color: Colors.pink[300]),
         ),
       ),
@@ -120,7 +120,7 @@ class _SignUpState extends State<SignUp> {
       child: TextButton(
         onPressed: () => Navigator.pushNamed(context, "/loginPage"),
         child: Text(
-          "Giriş Sayfasına Geri Dön",
+          "Back to Login Page",
           style: TextStyle(color: Colors.pink[300]),
         ),
       ),
@@ -163,7 +163,7 @@ class _SignUpState extends State<SignUp> {
         password = value!;
       },
       obscureText: true,
-      decoration: customInputDecoration("Sifre"),
+      decoration: customInputDecoration("Password"),
       style: TextStyle(color: const Color.fromARGB(255, 118, 92, 92)),
     );
   }
@@ -194,7 +194,7 @@ class _SignUpState extends State<SignUp> {
         name = value!;
       },
       style: TextStyle(color: Colors.white),
-      decoration: customInputDecoration("Ad"),
+      decoration: customInputDecoration("Name"),
     );
   }
 
@@ -209,13 +209,13 @@ class _SignUpState extends State<SignUp> {
         lastName = value!;
       },
       style: TextStyle(color: Colors.white),
-      decoration: customInputDecoration("Soyad"),
+      decoration: customInputDecoration("Lastname"),
     );
   }
 
   Text titleText() {
     return Text(
-      "Merhaba,\nHoşgeldiniz",
+      "Hello,\nRegister Page",
       style: TextStyle(
           fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),
     );

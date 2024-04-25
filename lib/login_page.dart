@@ -48,8 +48,9 @@ class _LoginPageState extends State<LoginPage> {
                       CustomTextButton(
                         onPressed: () =>
                             Navigator.pushNamed(context, "/signUp"),
-                        buttonText: "Hesap Olustur",
+                        buttonText: "Sign Up",
                       ),
+                      /*
                       CustomTextButton(
                           onPressed: () async {
                             final result = await authService.signInAnonymous();
@@ -69,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
                               print("Hata ile karsilasildi");
                             }
                           },
-                          buttonText: "Admin Girisi"),
+                          buttonText: "Admin Girisi"),*/
                     ],
                   ),
                 ),
@@ -128,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
           child: Center(
             child: Text(
-              "Giriş yap",
+              "LOGIN",
               style: TextStyle(
                 color: Colors.white,
               ),
@@ -171,7 +172,7 @@ class _LoginPageState extends State<LoginPage> {
     return TextButton(
       onPressed: () => Navigator.pushNamed(context, "/forgotPassword"),
       child: Text(
-        "Şifremi Unuttum",
+        "Forgot Password?",
         style: TextStyle(color: Colors.pink[300]),
       ),
     );
@@ -188,7 +189,7 @@ class _LoginPageState extends State<LoginPage> {
         password = value!;
       },
       obscureText: true,
-      decoration: customInputDecaration("Sifre"),
+      decoration: customInputDecaration("Password"),
       style: TextStyle(color: Colors.grey[300]),
     );
   }
@@ -210,7 +211,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Text titleText() {
     return Text(
-      "Merhaba,\nHoşgeldiniz",
+      "Hello,\nWelcome To My App",
       style: TextStyle(
           fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),
     );
