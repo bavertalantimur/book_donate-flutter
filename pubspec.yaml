@@ -49,6 +49,13 @@ dependencies:
   
   http: ^1.2.0
   flutter_stripe: ^10.1.1
+  chat_gpt_sdk: ^3.0.3
+  provider: ^6.1.2
+  
+  flutter_spinkit: ^5.2.1
+  animated_text_kit: ^4.2.2
+  dash_chat_2: ^0.0.20
+  
   
   
 

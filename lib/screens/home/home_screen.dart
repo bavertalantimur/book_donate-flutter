@@ -4,8 +4,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test_application/blocs/category/category_bloc.dart';
+import 'package:flutter_test_application/screens/mybot/chatbot.dart';
 
-import 'package:flutter_test_application/models/models.dart';
 import 'package:flutter_test_application/screens/screens.dart';
 
 import 'package:flutter_test_application/widgets/widgets.dart';
@@ -38,9 +38,7 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: CustomAppBar(title: 'Home'),
-      drawer: MyDrawer(
-        onProfileTap: goToProfilePage,
-      ),
+      drawer: MyDrawer(),
       bottomNavigationBar: CustomNavBar(),
       body: SingleChildScrollView(
         child: Column(
@@ -94,6 +92,15 @@ class HomeScreen extends StatelessWidget {
             ),
 
             SectionTitle(title: 'Most Popular'),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ChatBot()),
+                );
+              },
+              child: Text('Kitap Öner'),
+            ),
             BlocBuilder<ProductBloc, ProductState>(
               builder: (context, state) {
                 if (state is ProductLoading) {

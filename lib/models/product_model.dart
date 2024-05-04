@@ -50,6 +50,23 @@ class Product extends Equatable {
     return product;
   }
 
+  static Future<List<Product>> fetchProductsByCategory(String category) async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> querySnapshot =
+          await FirebaseFirestore.instance
+              .collection('products')
+              .where('category', isEqualTo: category)
+              .get();
+
+      return querySnapshot.docs
+          .map((doc) => Product.fromSnapshot(doc))
+          .toList();
+    } catch (e) {
+      print("Error fetching products: $e");
+      return [];
+    }
+  }
+
   static List<Product> products = [
     Product(
         name: 'acil mat',

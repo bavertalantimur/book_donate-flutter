@@ -9,3 +9,4 @@ export 'order_summary.dart';
 export 'order_summary_product_card.dart';
 export 'apple_pay.dart';
 export 'google_pay.dart';
+export 'text_widget.dart';
