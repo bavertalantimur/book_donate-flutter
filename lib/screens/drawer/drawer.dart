@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_application/screens/screens.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({Key? key});
@@ -65,8 +66,31 @@ class MyDrawer extends StatelessWidget {
                   style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
                 onTap: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => ChatScreen()));
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text("Çıkış Yap"),
+                        content:
+                            Text("Çıkış yapmak istediğinizden emin misiniz?"),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text("Hayır"),
+                          ),
+                          TextButton(
+                            onPressed: () async {
+                              await FirebaseAuth.instance.signOut();
+                              Navigator.pushNamed(context, '/loginPage');
+                            },
+                            child: Text("Evet"),
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 },
               ),
             ),
@@ -76,6 +100,7 @@ class MyDrawer extends StatelessWidget {
     );
   }
 }
+
 
 
 

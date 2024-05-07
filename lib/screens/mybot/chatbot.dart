@@ -16,38 +16,49 @@ class _ChatBotState extends State<ChatBot> {
   ChatUser bot = ChatUser(id: '2', firstName: 'gemini');
   List<ChatMessage> allMessages = [];
   List<ChatUser> typing = [];
-  final ourUrl =
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key= APİKEY';
-  final header = {'Content-Type': 'application/json'};
 
   getData(ChatMessage m) async {
     typing.add(bot);
     allMessages.insert(0, m);
     setState(() {});
-    var data = {
-      "contents": [
-        {
-          "parts": [
-            {"text": m.text}
-          ]
+
+    // Gelen mesajı küçük harfe çevirip içinde "kitap öner" ifadesi geçip geçmediğini kontrol ediyoruz
+    if (m.text.toLowerCase().contains('kitap öner')) {
+      var data = {
+        "contents": [
+          {
+            "parts": [
+              {
+                "text": "Kitap önerisi"
+              } // Burada istediğiniz cümleyi yazabilirsiniz
+            ]
+          }
+        ]
+      };
+      await http
+          .post(Uri.parse(ourUrl), headers: header, body: jsonEncode(data))
+          .then((value) {
+        if (value.statusCode == 200) {
+          var result = jsonDecode(value.body);
+          ChatMessage m1 = ChatMessage(
+              text: result['candidates'][0]['content']['parts'][0]['text'],
+              user: bot,
+              createdAt: DateTime.now());
+          allMessages.insert(0, m1);
+        } else {
+          print("error occured");
         }
-      ]
-    };
-    await http
-        .post(Uri.parse(ourUrl), headers: header, body: jsonEncode(data))
-        .then((value) {
-      if (value.statusCode == 200) {
-        var result = jsonDecode(value.body);
-        //print(result['candidates'][0]['content']['parts'][0]['text']);
-        ChatMessage m1 = ChatMessage(
-            text: result['candidates'][0]['content']['parts'][0]['text'],
-            user: bot,
-            createdAt: DateTime.now());
-        allMessages.insert(0, m1);
-      } else {
-        print("error occured");
-      }
-    }).catchError((e) {});
+      }).catchError((e) {});
+    } else {
+      // "kitap öner" ifadesi geçmiyorsa sadece bilgi mesajı gönder
+      ChatMessage infoMessage = ChatMessage(
+        text: "Üzgünüm, sadece kitap önermek için buradayım.",
+        user: bot,
+        createdAt: DateTime.now(),
+      );
+      allMessages.insert(0, infoMessage);
+    }
+
     typing.remove(bot);
     setState(() {});
   }

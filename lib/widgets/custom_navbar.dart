@@ -31,34 +31,34 @@ class CustomNavBar extends StatelessWidget {
               },
               icon: Icon(Icons.person, color: Colors.white)),
           IconButton(
-              onPressed: () async {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text("Çıkış Yap"),
-                      content:
-                          Text("Çıkış yapmak istediğinizden emin misiniz?"),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Text("Hayır"),
-                        ),
-                        TextButton(
-                          onPressed: () async {
-                            await FirebaseAuth.instance.signOut();
-                            Navigator.pushNamed(context, '/loginPage');
-                          },
-                          child: Text("Evet"),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-              icon: Icon(Icons.exit_to_app, color: Colors.white)),
+            onPressed: () async {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text("Çıkış Yap"),
+                    content: Text("Çıkış yapmak istediğinizden emin misiniz?"),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text("Hayır"),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          await FirebaseAuth.instance.signOut();
+                          Navigator.pushNamed(context, '/loginPage');
+                        },
+                        child: Text("Evet"),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            icon: Icon(Icons.exit_to_app, color: Colors.white),
+          ),
         ],
       ),
     );

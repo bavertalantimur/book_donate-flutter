@@ -80,7 +80,7 @@ flutter:
 
   assets: 
     - images/
-    - assets/
+    
    
     
   #   - images/a_dot_ham.jpeg
