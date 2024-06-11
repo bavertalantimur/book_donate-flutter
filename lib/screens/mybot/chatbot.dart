@@ -3,12 +3,13 @@ import 'dart:convert';
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatBot extends StatefulWidget {
-  const ChatBot({super.key});
+  const ChatBot({Key? key}) : super(key: key);
 
   @override
-  State<ChatBot> createState() => _ChatBotState();
+  _ChatBotState createState() => _ChatBotState();
 }
 
 class _ChatBotState extends State<ChatBot> {
@@ -16,51 +17,79 @@ class _ChatBotState extends State<ChatBot> {
   ChatUser bot = ChatUser(id: '2', firstName: 'gemini');
   List<ChatMessage> allMessages = [];
   List<ChatUser> typing = [];
+  final ourUrl =
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyBD63pB7Xyq85S4nijajy7OJbyGFpmF5NQ'; // Replace with your API key
+  final header = {'Content-Type': 'application/json'};
+  List<String> categories = [];
 
-  getData(ChatMessage m) async {
+  // Function to get categories from Firestore
+  Future<void> getCategories() async {
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection('categories').get();
+    categories = querySnapshot.docs
+        .map((doc) => (doc['name'] as String).trim().toUpperCase())
+        .toList();
+    print("Categories loaded: $categories");
+  }
+
+  // Function to get book recommendations based on genre
+  Future<void> getBookRecommendations(String genre) async {
     typing.add(bot);
-    allMessages.insert(0, m);
     setState(() {});
 
-    // Gelen mesajı küçük harfe çevirip içinde "kitap öner" ifadesi geçip geçmediğini kontrol ediyoruz
-    if (m.text.toLowerCase().contains('kitap öner')) {
-      var data = {
-        "contents": [
-          {
-            "parts": [
-              {
-                "text": "Kitap önerisi"
-              } // Burada istediğiniz cümleyi yazabilirsiniz
-            ]
-          }
-        ]
-      };
-      await http
-          .post(Uri.parse(ourUrl), headers: header, body: jsonEncode(data))
-          .then((value) {
-        if (value.statusCode == 200) {
-          var result = jsonDecode(value.body);
-          ChatMessage m1 = ChatMessage(
-              text: result['candidates'][0]['content']['parts'][0]['text'],
-              user: bot,
-              createdAt: DateTime.now());
-          allMessages.insert(0, m1);
-        } else {
-          print("error occured");
+    var data = {
+      "contents": [
+        {
+          "parts": [
+            {"text": "Recommend me some books in the genre of $genre"}
+          ]
         }
-      }).catchError((e) {});
-    } else {
-      // "kitap öner" ifadesi geçmiyorsa sadece bilgi mesajı gönder
-      ChatMessage infoMessage = ChatMessage(
-        text: "Üzgünüm, sadece kitap önermek için buradayım.",
-        user: bot,
-        createdAt: DateTime.now(),
+      ]
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse(ourUrl),
+        headers: header,
+        body: jsonEncode(data),
       );
-      allMessages.insert(0, infoMessage);
+
+      if (response.statusCode == 200) {
+        var result = jsonDecode(response.body);
+        String recommendation =
+            result['candidates'][0]['content']['parts'][0]['text'];
+        ChatMessage responseMessage = ChatMessage(
+          text: 'I recommend the following books in $genre: $recommendation',
+          user: bot,
+          createdAt: DateTime.now(),
+        );
+        allMessages.insert(0, responseMessage);
+      } else {
+        print("Error: ${response.reasonPhrase}");
+      }
+    } catch (e) {
+      print("Error: $e");
     }
 
     typing.remove(bot);
     setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Fetch categories when the widget initializes
+    getCategories().then((_) {
+      // Create a message asking user to choose a category
+      ChatMessage categoryMessage = ChatMessage(
+        text:
+            'I am a book chatbot. Choose one of these categories according to your interests: ${categories.join(', ')}',
+        user: bot,
+        createdAt: DateTime.now(),
+      );
+      allMessages.add(categoryMessage);
+      setState(() {});
+    });
   }
 
   @override
@@ -69,20 +98,30 @@ class _ChatBotState extends State<ChatBot> {
       appBar: AppBar(
         title: Text('Chat Bot'),
       ),
-      body: Container(
-        child: DashChat(
-            typingUsers: typing,
-            currentUser: mySelf,
-            onSend: (ChatMessage m) {
-              getData(m);
-            },
-            messages: allMessages),
+      body: DashChat(
+        typingUsers: typing,
+        currentUser: mySelf,
+        onSend: (ChatMessage message) {
+          allMessages.insert(0, message);
+          String userInput = message.text.trim().toUpperCase();
+          print("User input: $userInput");
+          print("Categories: $categories");
+
+          if (categories.contains(userInput)) {
+            getBookRecommendations(userInput);
+          } else {
+            ChatMessage errorMessage = ChatMessage(
+              text:
+                  'Please choose one of the listed categories: ${categories.join(', ')}',
+              user: bot,
+              createdAt: DateTime.now(),
+            );
+            allMessages.insert(0, errorMessage);
+            setState(() {});
+          }
+        },
+        messages: allMessages,
       ),
     );
   }
 }
-/*AIzaSyBD63pB7Xyq85S4nijajy7OJbyGFpmF5NQ
-curl \
-  -H 'Content-Type: application/json' \
-  -d '{"contents":[{"parts":[{"text":"Write a story about a magic backpack"}]}]}' \
-  -X POST 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=YOUR_API_KEY'*/

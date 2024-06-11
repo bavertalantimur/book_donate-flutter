@@ -24,18 +24,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void goToProfilePage() {
-      Navigator.pop(
-        context,
-      );
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ProfileScreen(),
-        ),
-      );
-    }
-
     return Scaffold(
       appBar: CustomAppBar(title: 'Home'),
       drawer: MyDrawer(),
@@ -86,7 +74,7 @@ class HomeScreen extends StatelessWidget {
                         .toList(),
                   );
                 } else {
-                  return Text('Something wentwrong');
+                  return Text('Something went wrong');
                 }
               },
             ),
@@ -111,11 +99,11 @@ class HomeScreen extends StatelessWidget {
                 if (state is ProductLoaded) {
                   return ProductCarousel(
                     products: state.products
-                        .where((product) => product.isRecommended)
+                        .where((product) => product.isPopular)
                         .toList(),
                   );
                 } else {
-                  return Text("Something went Wrong");
+                  return Text("Something went wrong");
                 }
               },
             ),

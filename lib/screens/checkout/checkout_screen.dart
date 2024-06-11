@@ -23,7 +23,7 @@ class CheckoutScreen extends StatelessWidget {
     return Scaffold(
       appBar: const CustomAppBar(title: 'Checkout'),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.black,
+        color: Colors.white,
         child: BlocBuilder<CheckoutBloc, CheckoutState>(
           builder: (context, state) {
             if (state is CheckoutLoading) {
@@ -35,6 +35,7 @@ class CheckoutScreen extends StatelessWidget {
               if (Platform.isAndroid) {
                 switch (state.paymentMethod) {
                   case PaymentMethod.google_pay:
+                    print(123);
                     return GooglePay(
                       products: state.products!,
                       total: state.total!,

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:flutter_test_application/screens/order_confirmation/order_confirmation_screen.dart';
 import 'package:http/http.dart' as http;
 
 class CardFormScreen extends StatefulWidget {
@@ -37,6 +38,12 @@ class _CardFormScreenState extends State<CardFormScreen> {
   void displayPaymentSheet() async {
     try {
       await Stripe.instance.presentPaymentSheet();
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => OrderConfirmation(),
+        ),
+      );
       print("Done");
     } catch (e) {
       print("Failed");
@@ -44,14 +51,15 @@ class _CardFormScreenState extends State<CardFormScreen> {
   }
 
   createPaymentIntent() async {
-    print(4444);
-    String a = widget.total.toString();
-    print(a);
     try {
-      print(3333);
-      print(widget.total.toString());
+      double totalAmount = double.parse(widget.total.trim()) * 100;
+      String parsedAmount = totalAmount.toStringAsFixed(0);
+      print("widget.total: ${widget.total}");
+      String totalAmountt = widget.total.trim();
+      print("sss:$totalAmountt");
+
       Map<String, dynamic>? body = {
-        "amount": "50",
+        "amount": "${parsedAmount}",
         "currency": "USD",
       };
       http.Response response = await http.post(
@@ -62,9 +70,11 @@ class _CardFormScreenState extends State<CardFormScreen> {
                 "Bearer sk_test_51Oz1t9GoVZmaqHdXWomlRgz3HZUdPWV18ZxEEbzQe2Mi6CqDOhznpL5SH6QMw20Kz82k4jDMDWLjRmBW6bgQidg800Vvx7Ezsv",
             "Content-Type": "application/x-www-form-urlencoded",
           });
+      print("Stripe API yanıtı: ${response.body}");
       return json.decode(response.body);
     } catch (e) {
-      throw Exception(e.toString());
+      throw Exception(
+          "Stripe API'ye ödeme isteği gönderilirken bir hata oluştu: $e");
     }
   }
 

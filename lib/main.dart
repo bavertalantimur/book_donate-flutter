@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Talantimur Book World',
 
         routes: {
           "/loginPage": (context) => LoginPage(),
