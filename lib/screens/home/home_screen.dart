@@ -58,7 +58,9 @@ class HomeScreen extends StatelessWidget {
                 },
               ),
             ),
-            SectionTitle(title: 'Recommended'),
+            SectionTitle(
+              title: 'Recommended',
+            ),
             //Product Card
             BlocBuilder<ProductBloc, ProductState>(
               builder: (context, state) {
@@ -68,7 +70,7 @@ class HomeScreen extends StatelessWidget {
                   );
                 }
                 if (state is ProductLoaded) {
-                  return ProductCarousel(
+                  return ProductGrid(
                     products: state.products
                         .where((product) => product.isRecommended)
                         .toList(),
@@ -97,7 +99,7 @@ class HomeScreen extends StatelessWidget {
                   );
                 }
                 if (state is ProductLoaded) {
-                  return ProductCarousel(
+                  return ProductGrid(
                     products: state.products
                         .where((product) => product.isPopular)
                         .toList(),

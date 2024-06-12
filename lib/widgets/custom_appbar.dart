@@ -1,6 +1,5 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -10,37 +9,34 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }) : super(key: key);
 
   @override
+  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+
+  @override
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.transparent,
       elevation: 0,
-      title: Center(
-        child: Container(
-          color: Colors.black,
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 10,
-          ),
-          child: Text(
-            title,
-            style: Theme.of(context).textTheme.headline5!.copyWith(
-                  color: Colors.white,
-                ),
-          ),
+      centerTitle: true, // Başlığı ortalamak için
+      title: Text(
+        title,
+        style: GoogleFonts.sora(
+          textStyle: TextStyle(
+              color: Color(0xFF242424),
+              fontSize: 24,
+              fontWeight: FontWeight.bold // Başlık için font boyutu
+              ),
         ),
       ),
+      /*
       iconTheme: IconThemeData(color: Colors.black),
       actions: [
         IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/wishlist');
-            },
-            icon: Icon(Icons.favorite))
-      ],
+          onPressed: () {
+            Navigator.pushNamed(context, '/wishlist');
+          },
+          icon: Icon(Icons.favorite),
+        )
+      ],*/
     );
   }
-
-  @override
-  // TODO: implement preferredSize
-  Size get preferredSize => Size.fromHeight(50);
 }

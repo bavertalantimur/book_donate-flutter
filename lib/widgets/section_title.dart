@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SectionTitle extends StatelessWidget {
   final String title;
@@ -15,7 +16,13 @@ class SectionTitle extends StatelessWidget {
         alignment: Alignment.topLeft,
         child: Text(
           title,
-          style: Theme.of(context).textTheme.headline3,
+          style: GoogleFonts.sora(
+            textStyle: TextStyle(
+              fontSize: 25, // 20px olarak ayarlandı
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF242424), // Kalın font olarak ayarlandı
+            ),
+          ),
         ),
       ),
     );
