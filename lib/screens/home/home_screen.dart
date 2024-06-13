@@ -25,7 +25,9 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'Home'),
+      appBar: CustomAppBar(
+        title: 'Home',
+      ),
       drawer: MyDrawer(),
       bottomNavigationBar: CustomNavBar(),
       body: SingleChildScrollView(

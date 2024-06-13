@@ -53,7 +53,6 @@ class HeroCarouselCard extends StatelessWidget {
                   child: Text(
                     product == null ? category!.name : '',
                     style: GoogleFonts.sora(
-                      // Sora yazı tipi Google Fonts ile belirlendi
                       textStyle: TextStyle(
                         color: Colors.white,
                         fontSize: 30, // Yazı boyutu 20
