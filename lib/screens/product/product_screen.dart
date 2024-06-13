@@ -2,12 +2,12 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test_application/blocs/cart/cart_bloc.dart';
-import 'package:flutter_test_application/blocs/wishlist/wishlist_bloc.dart';
+// import 'package:flutter_test_application/blocs/wishlist/wishlist_bloc.dart';
+import 'package:flutter_test_application/screens/mybot/chatbot.dart';
 import 'package:flutter_test_application/screens/screens.dart';
 import 'package:flutter_test_application/widgets/custom_appbar.dart';
-
 import 'package:flutter_test_application/widgets/hero_carousel_card.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 import '../../models/product_model.dart';
 
 class ProductScreen extends StatelessWidget {
@@ -21,71 +21,100 @@ class ProductScreen extends StatelessWidget {
   }
 
   final Product product;
+
   const ProductScreen({required this.product});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: product.category),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.black,
-        child: Container(
-          height: 50,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ChatScreen(),
+      bottomNavigationBar: Padding(
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+          child: ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(20.0)),
+            child: BottomAppBar(
+              color: Color(0xFFF5F5F5),
+              child: Container(
+                height: 50,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ChatScreen(),
+                          ),
+                        );
+                      },
+                      icon: Image.asset(
+                        'images/chat.png',
+                        width: 32,
+                        height: 32,
+                      ),
                     ),
-                  );
-                },
-                icon: Icon(
-                  Icons.message,
-                  color: Colors.white,
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ChatBot()),
+                        );
+                      },
+                      icon: Image.asset(
+                        'images/robot.png',
+                        width: 38,
+                        height: 38,
+                      ),
+                    ),
+                    BlocBuilder<CartBloc, CartState>(
+                      builder: (context, state) {
+                        return ElevatedButton.icon(
+                          onPressed: () {
+                            context
+                                .read<CartBloc>()
+                                .add(CartProductAdded(product));
+
+                            final snackBar =
+                                SnackBar(content: Text('Added to your Cart'));
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                            Navigator.pushNamed(context, '/cart');
+                          },
+                          icon: Image.asset(
+                            'images/add-to-cart.png',
+                            width: 28,
+                            height: 28,
+                          ),
+                          label: Row(
+                            children: [
+                              SizedBox(width: 4),
+                              Text(
+                                'Add to cart',
+                                style: GoogleFonts.sora(
+                                  textStyle: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                    color: Color(0xFF242424),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ),
-              BlocBuilder<WishlistBloc, WishlistState>(
-                builder: (context, state) {
-                  return IconButton(
-                    onPressed: () {
-                      context
-                          .read<WishlistBloc>()
-                          .add(AddWishListProduct(product));
-                    },
-                    icon: Icon(
-                      Icons.favorite,
-                      color: Colors.white,
-                    ),
-                  );
-                },
-              ),
-              BlocBuilder<CartBloc, CartState>(
-                builder: (context, state) {
-                  return ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white),
-                      onPressed: () {
-                        context.read<CartBloc>().add(CartProductAdded(product));
-
-                        final snackBar =
-                            SnackBar(content: Text('Added to your Cart'));
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        Navigator.pushNamed(context, '/cart');
-                      },
-                      child: Text(
-                        'Add to cart',
-                        style: Theme.of(context).textTheme.headline5,
-                      ));
-                },
-              )
-            ],
-          ),
-        ),
-      ),
+            ),
+          )),
       body: ListView(
         children: [
           CarouselSlider(
@@ -102,40 +131,28 @@ class ProductScreen extends StatelessWidget {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Stack(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 60,
-                  alignment: Alignment.bottomCenter,
-                  color: Colors.black.withAlpha(50),
+                Text(
+                  product.name,
+                  style: GoogleFonts.sora(
+                    textStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: Color(0xFF242424),
+                    ),
+                  ),
                 ),
-                Container(
-                  margin: const EdgeInsets.all(5.0),
-                  width: MediaQuery.of(context).size.width - 10,
-                  height: 50,
-                  color: Colors.black,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          product.name,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline5!
-                              .copyWith(color: Colors.white),
-                        ),
-                        Text(
-                          '\$${product.price}',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline5!
-                              .copyWith(color: Colors.white),
-                        ),
-                      ],
+                Text(
+                  '\$${product.price}',
+                  style: GoogleFonts.sora(
+                    textStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: Color(0xFF242424),
                     ),
                   ),
                 ),
@@ -143,37 +160,35 @@ class ProductScreen extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
             child: ExpansionTile(
               initiallyExpanded: true,
               title: Text(
                 'Product Information',
-                style: Theme.of(context).textTheme.headline6,
+                style: GoogleFonts.sora(
+                  textStyle: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 18,
+                    color: Color(0xFF242424),
+                  ),
+                ),
               ),
               children: [
                 ListTile(
-                  title: Text(product.description,
-                      style: Theme.of(context).textTheme.bodyText1),
+                  title: Text(
+                    product.description,
+                    style: GoogleFonts.sora(
+                      textStyle: TextStyle(
+                        fontSize: 16,
+                        color: Color(0xFF242424),
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
-          /*  Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: ExpansionTile(
-              title: Text(
-                'Delivery Information',
-                style: Theme.of(context).textTheme.headline6,
-              ),
-              children: [
-                ListTile(
-                  title: Text('Lorem',
-                      style: Theme.of(context).textTheme.bodyText1),
-                ),
-              ],
-            ),
-          )
-        */
         ],
       ),
     );
