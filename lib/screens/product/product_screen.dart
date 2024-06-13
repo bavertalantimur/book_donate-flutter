@@ -152,7 +152,7 @@ class ProductScreen extends StatelessWidget {
               ),
               children: [
                 ListTile(
-                  title: Text('BU BİR KİTAPTİR',
+                  title: Text(product.description,
                       style: Theme.of(context).textTheme.bodyText1),
                 ),
               ],

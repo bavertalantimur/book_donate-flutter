@@ -90,7 +90,7 @@ class OrderConfirmation extends StatelessWidget {
                     shrinkWrap: true,
                     padding: EdgeInsets.zero,
                     physics: NeverScrollableScrollPhysics(),
-                    children: [
+                    /*children: [
                       OrderSummaryProductCard(
                         product: Product.products[0],
                         quantity: 3,
@@ -99,7 +99,7 @@ class OrderConfirmation extends StatelessWidget {
                         product: Product.products[1],
                         quantity: 2,
                       )*/
-                    ],
+                    ],*/
                   ),
                 ],
               ),

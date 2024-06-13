@@ -10,6 +10,7 @@ class Product extends Equatable {
   final String numberPage;
   final String author;*/
   final String imageUrl;
+  final String description;
   final bool isRecommended;
   final bool isPopular;
 
@@ -17,6 +18,7 @@ class Product extends Equatable {
       {required this.name,
       required this.category,
       required this.price,
+      required this.description,
       /*required this.publicationYear,
       required this.publisher,
       required this.numberPage,
@@ -30,6 +32,7 @@ class Product extends Equatable {
   List<Object?> get props => [
         name,
         category,
+        description,
         price,
         /*publicationYear,
         publisher,
@@ -44,6 +47,7 @@ class Product extends Equatable {
         name: snap['name'],
         category: snap['category'],
         price: snap['price'],
+        description: snap['description'],
         imageUrl: snap['imageUrl'],
         isRecommended: snap['isRecommended'],
         isPopular: snap['isPopular']);
@@ -67,7 +71,7 @@ class Product extends Equatable {
     }
   }
 
-  static List<Product> products = [
+  /*static List<Product> products = [
     Product(
         name: 'acil mat',
         category: 'YKS',
@@ -92,5 +96,5 @@ class Product extends Equatable {
         price: 20.5,
         isRecommended: true,
         isPopular: false)
-  ];
+  ];*/
 }
