@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_test_application/blocs/cart/cart_bloc.dart';
 
 import '../models/product_model.dart';
@@ -14,12 +15,12 @@ class CartProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
+      padding: const EdgeInsets.only(top: 8.0, bottom: 18.0),
       child: Row(
         children: [
           Image.network(
             product.imageUrl,
-            width: 100,
+            width: 80,
             height: 80,
             fit: BoxFit.contain,
           ),
@@ -32,11 +33,17 @@ class CartProductCard extends StatelessWidget {
               children: [
                 Text(
                   product.name,
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  style: GoogleFonts.sora(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 Text(
                   '\$${product.price}',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                  style: GoogleFonts.sora(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
@@ -57,20 +64,34 @@ class CartProductCard extends StatelessWidget {
                             .add(CartProductRemoved(product));
                       },
                       icon: const Icon(Icons.remove_circle),
+                      color: Color(0xFF8E44AD), // İkon rengi
+                      splashColor: Colors.transparent, // Tıklama efekti rengi
+                      highlightColor:
+                          Colors.transparent, // Basılı tutma efekti rengi
                     ),
-                    Text('$quantity'),
+                    Text(
+                      '$quantity',
+                      style: GoogleFonts.sora(),
+                    ),
                     IconButton(
                       onPressed: () {
                         context.read<CartBloc>().add(CartProductAdded(product));
                       },
                       icon: const Icon(Icons.add_circle),
-                    )
+                      color: Color(0xFF8E44AD), // İkon rengi
+                      splashColor: Colors.transparent, // Tıklama efekti rengi
+                      highlightColor:
+                          Colors.transparent, // Basılı tutma efekti rengi
+                    ),
                   ],
                 );
               }
-              return Text('Something went Wrong');
+              return Text(
+                'Something went wrong',
+                style: GoogleFonts.sora(),
+              );
             },
-          )
+          ),
         ],
       ),
     );

@@ -1,13 +1,11 @@
-// ignore_for_file: deprecated_member_use, sized_box_for_whitespace
+// ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:flutter_test_application/blocs/cart/cart_bloc.dart';
-import 'package:flutter_test_application/models/cart_model.dart';
 import 'package:flutter_test_application/widgets/widgets.dart';
-
-import '../../models/product_model.dart';
 
 class CartScreen extends StatelessWidget {
   static const String routeName = '/cart';
@@ -15,8 +13,6 @@ class CartScreen extends StatelessWidget {
   static Route route() {
     return MaterialPageRoute(
       settings: RouteSettings(name: routeName),
-
-      ///!!!!
       builder: (context) => CartScreen(),
     );
   }
@@ -24,29 +20,8 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: CustomAppBar(title: 'Cart'),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.black,
-        child: Container(
-          height: 70,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/checkout');
-                },
-                child: const Text('GO TO CHECKOUT',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold)),
-              ),
-            ],
-          ),
-        ),
-      ),
       body: BlocBuilder<CartBloc, CartState>(
         builder: (context, state) {
           if (state is CartLoading) {
@@ -55,42 +30,38 @@ class CartScreen extends StatelessWidget {
             );
           }
           if (state is CartLoaded) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  child: Column(
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            state.cart.freeDeliveryString,
-                            style: TextStyle(
-                                fontSize: 12, fontWeight: FontWeight.bold),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.pushNamed(context, '/');
-                            },
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.black,
-                                shape: const RoundedRectangleBorder(),
-                                elevation: 0),
-                            child: Text(
-                              'ADD more',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline5!
-                                  .copyWith(color: Colors.white),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 8,
                             ),
-                          )
+                            decoration: BoxDecoration(
+                              color: Color(0xFF8E44AD),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              state.cart.freeDeliveryString,
+                              style: GoogleFonts.sora(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 10,
-                      ),
+                      const SizedBox(height: 20),
                       SizedBox(
                         height: 400,
                         child: ListView.builder(
@@ -114,143 +85,60 @@ class CartScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  OrderSummary(),
-                ],
-              ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                    border: Border(
+                      top: BorderSide(
+                        color: Color(0xFF8E44AD), // Gri renkte bir üst border
+                        width: 2.0,
+                      ),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      children: [
+                        OrderSummary(),
+                        const SizedBox(height: 10),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            backgroundColor: Color(0xFF8E44AD),
+                            minimumSize: Size(320, 50),
+                          ),
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/checkout');
+                          },
+                          child: Text(
+                            'GO TO CHECKOUT',
+                            style: GoogleFonts.sora(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             );
           } else {
-            return Text('something wrong');
+            return Center(
+              child: Text('Something went wrong'),
+            );
           }
         },
       ),
     );
   }
 }
-
-
-
-
-/* Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      Cart().freeDeliveryString,
-                      style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/');
-                      },
-                      style: ElevatedButton.styleFrom(
-                          primary: Colors.black,
-                          shape: const RoundedRectangleBorder(),
-                          elevation: 0),
-                      child: Text(
-                        'ADD more',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline5!
-                            .copyWith(color: Colors.white),
-                      ),
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                SizedBox(
-                  height: 400,
-                  child: ListView.builder(
-                    itemCount: Cart().products.length,
-                    itemBuilder: (context, index) {
-                      return CartProductCard(product: Cart().products[index]);
-                    },
-                  ),
-                ),
-              ],
-            ),
-            Column(
-              children: [
-                const Divider(
-                  thickness: 2,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text('SUBTOTAL',
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold)),
-                          Text('\$${Cart().subtotalString}',
-                              style: const TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold)),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text('DELIVERY FREE',
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold)),
-                          Text('\$${Cart().deliveryFeeString}',
-                              style: const TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold)),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Stack(
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 60,
-                      decoration: BoxDecoration(
-                        color: Colors.black.withAlpha(50),
-                      ),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      margin: const EdgeInsets.all(5.0),
-                      height: 50,
-                      decoration: const BoxDecoration(
-                        color: Colors.black,
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 30),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(' TOTAL',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold)),
-                            Text('\$${Cart().totalString}',
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold)),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),  */

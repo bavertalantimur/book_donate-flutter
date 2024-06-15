@@ -54,6 +54,7 @@ class PaymentSelection extends StatelessWidget {
                     ? RawGooglePayButton(
                         type: GooglePayButtonType.pay,
                         onPressed: () {
+                          print("ahmet");
                           context.read<PaymentBloc>().add(
                                 SelectPaymentMethod(
                                     paymentMethod: PaymentMethod.google_pay),

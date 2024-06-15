@@ -38,11 +38,13 @@ class HeroCarouselCard extends StatelessWidget {
                 left: 0.0,
                 right: 0.0,
                 child: Container(
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        Color.fromARGB(200, 0, 0, 0),
-                        Color.fromARGB(0, 0, 0, 0)
+                        Color(0xFF8E44AD), // Mor tonları
+                        Color(0xFF8E24AA).withOpacity(0.5),
+
+                        Colors.transparent,
                       ],
                       begin: Alignment.bottomCenter,
                       end: Alignment.topCenter,
@@ -55,7 +57,7 @@ class HeroCarouselCard extends StatelessWidget {
                     style: GoogleFonts.sora(
                       textStyle: TextStyle(
                         color: Colors.white,
-                        fontSize: 30, // Yazı boyutu 20
+                        fontSize: 30, // Yazı boyutu 30
                         fontWeight: FontWeight.bold, // Kalın font
                       ),
                     ),

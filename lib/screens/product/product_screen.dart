@@ -2,7 +2,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test_application/blocs/cart/cart_bloc.dart';
-// import 'package:flutter_test_application/blocs/wishlist/wishlist_bloc.dart';
 import 'package:flutter_test_application/screens/mybot/chatbot.dart';
 import 'package:flutter_test_application/screens/screens.dart';
 import 'package:flutter_test_application/widgets/custom_appbar.dart';
@@ -83,8 +82,8 @@ class ProductScreen extends StatelessWidget {
                           },
                           icon: Image.asset(
                             'images/add-to-cart.png',
-                            width: 28,
-                            height: 28,
+                            width: 26,
+                            height: 26,
                           ),
                           label: Row(
                             children: [
@@ -162,17 +161,27 @@ class ProductScreen extends StatelessWidget {
           Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
-            child: ExpansionTile(
-              initiallyExpanded: true,
-              title: Text(
-                'Product Information',
-                style: GoogleFonts.sora(
-                  textStyle: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 18,
-                    color: Color(0xFF242424),
+            child: AnimatedExpansionTile(
+              title: Row(
+                children: [
+                  Image.asset(
+                    'images/book.png',
+                    width: 32,
+                    height: 32,
+                    color: Colors.white,
                   ),
-                ),
+                  SizedBox(width: 10),
+                  Text(
+                    'Book Information',
+                    style: GoogleFonts.sora(
+                      textStyle: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 18,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
               ),
               children: [
                 ListTile(
@@ -181,12 +190,122 @@ class ProductScreen extends StatelessWidget {
                     style: GoogleFonts.sora(
                       textStyle: TextStyle(
                         fontSize: 16,
-                        color: Color(0xFF242424),
+                        color: Colors.white,
                       ),
                     ),
                   ),
                 ),
               ],
+              tilePadding:
+                  EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+              expandedCrossAxisAlignment: CrossAxisAlignment.start,
+              collapsedBackgroundColor: Color(0xFF8E44AD), // Daha koyu mor
+              expandedBackgroundColor:
+                  Color.fromARGB(255, 162, 79, 198), // Daha açık mor
+              expandedAlignment: Alignment.centerLeft,
+              backgroundColor: Colors.white,
+              childrenPadding: EdgeInsets.all(10.0),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class AnimatedExpansionTile extends StatefulWidget {
+  final Widget title;
+  final List<Widget> children;
+  final EdgeInsetsGeometry tilePadding;
+  final CrossAxisAlignment expandedCrossAxisAlignment;
+  final Alignment expandedAlignment;
+  final EdgeInsetsGeometry childrenPadding;
+  final Color backgroundColor;
+  final Color collapsedBackgroundColor;
+  final Color expandedBackgroundColor;
+
+  const AnimatedExpansionTile({
+    required this.title,
+    required this.children,
+    this.tilePadding = EdgeInsets.zero,
+    this.expandedCrossAxisAlignment = CrossAxisAlignment.center,
+    this.expandedAlignment = Alignment.center,
+    this.childrenPadding = EdgeInsets.zero,
+    this.backgroundColor = Colors.white,
+    this.collapsedBackgroundColor = Colors.transparent,
+    this.expandedBackgroundColor = Colors.white,
+  });
+
+  @override
+  _AnimatedExpansionTileState createState() => _AnimatedExpansionTileState();
+}
+
+class _AnimatedExpansionTileState extends State<AnimatedExpansionTile>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _iconTurns;
+  bool _isExpanded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 200),
+      vsync: this,
+    );
+    _iconTurns = Tween<double>(begin: 0.0, end: 0.5).animate(_controller);
+  }
+
+  void _handleTap() {
+    setState(() {
+      _isExpanded = !_isExpanded;
+      if (_isExpanded) {
+        _controller.forward();
+      } else {
+        _controller.reverse();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: _isExpanded
+            ? widget.expandedBackgroundColor
+            : widget.collapsedBackgroundColor,
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: Column(
+        children: [
+          ListTile(
+            onTap: _handleTap,
+            contentPadding: widget.tilePadding,
+            title: widget.title,
+            trailing: RotationTransition(
+              turns: _iconTurns,
+              child: Icon(
+                Icons.expand_more,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          ClipRect(
+            child: Align(
+              heightFactor: _isExpanded ? 1.0 : 0.0,
+              child: Padding(
+                padding: widget.childrenPadding,
+                child: Column(
+                  crossAxisAlignment: widget.expandedCrossAxisAlignment,
+                  children: widget.children,
+                ),
+              ),
             ),
           ),
         ],

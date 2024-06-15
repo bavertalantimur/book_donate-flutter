@@ -13,7 +13,7 @@ class CustomNavBar extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(20.0)),
         child: BottomAppBar(
-          color: Color(0xFFF5F5F5),
+          color: Colors.white,
           child: SizedBox(
             height: 80,
             child: Row(

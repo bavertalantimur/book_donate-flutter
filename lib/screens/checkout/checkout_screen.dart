@@ -35,7 +35,7 @@ class CheckoutScreen extends StatelessWidget {
               if (Platform.isAndroid) {
                 switch (state.paymentMethod) {
                   case PaymentMethod.google_pay:
-                    print(123);
+                    print("alii");
                     return GooglePay(
                       products: state.products!,
                       total: state.total!,
@@ -60,7 +60,7 @@ class CheckoutScreen extends StatelessWidget {
                     return Container();
 
                   default:
-                    return ApplePay(
+                    return GooglePay(
                         total: state.total!, products: state.products!);
                 }
               } else {
