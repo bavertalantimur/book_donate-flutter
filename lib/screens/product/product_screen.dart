@@ -28,92 +28,97 @@ class ProductScreen extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(title: product.category),
       bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-          child: ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(20.0)),
-            child: BottomAppBar(
-              color: Color(0xFFF5F5F5),
-              child: Container(
-                height: 50,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ChatScreen(),
-                          ),
-                        );
-                      },
-                      icon: Image.asset(
-                        'images/chat.png',
-                        width: 32,
-                        height: 32,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => ChatBot()),
-                        );
-                      },
-                      icon: Image.asset(
-                        'images/robot.png',
-                        width: 38,
-                        height: 38,
-                      ),
-                    ),
-                    BlocBuilder<CartBloc, CartState>(
-                      builder: (context, state) {
-                        return ElevatedButton.icon(
-                          onPressed: () {
-                            context
-                                .read<CartBloc>()
-                                .add(CartProductAdded(product));
-
-                            final snackBar =
-                                SnackBar(content: Text('Added to your Cart'));
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-                            Navigator.pushNamed(context, '/cart');
-                          },
-                          icon: Image.asset(
-                            'images/add-to-cart.png',
-                            width: 26,
-                            height: 26,
-                          ),
-                          label: Row(
-                            children: [
-                              SizedBox(width: 4),
-                              Text(
-                                'Add to cart',
-                                style: GoogleFonts.sora(
-                                  textStyle: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
-                                    color: Color(0xFF242424),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
+        padding: const EdgeInsets.only(),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+            border: Border(
+              top: BorderSide(
+                color: Color(0xFF8E44AD),
+                width: 2.0,
               ),
             ),
-          )),
+          ),
+          height: 80,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ChatScreen(),
+                    ),
+                  );
+                },
+                icon: Image.asset(
+                  'images/chat.png',
+                  width: 32,
+                  height: 32,
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ChatBot()),
+                  );
+                },
+                icon: Image.asset(
+                  'images/robot.png',
+                  width: 38,
+                  height: 38,
+                ),
+              ),
+              BlocBuilder<CartBloc, CartState>(
+                builder: (context, state) {
+                  return ElevatedButton.icon(
+                    onPressed: () {
+                      context.read<CartBloc>().add(CartProductAdded(product));
+
+                      final snackBar =
+                          SnackBar(content: Text('Added to your Cart'));
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      Navigator.pushNamed(context, '/cart');
+                    },
+                    icon: Image.asset(
+                      'images/add-to-cart.png',
+                      width: 26,
+                      height: 26,
+                    ),
+                    label: Row(
+                      children: [
+                        SizedBox(width: 8),
+                        Text(
+                          'Add to cart',
+                          style: GoogleFonts.sora(
+                            textStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                              color: Color(0xFF242424),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
       body: ListView(
         children: [
           CarouselSlider(

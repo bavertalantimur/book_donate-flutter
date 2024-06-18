@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart'; // Import Google Fonts
 import 'package:flutter_test_application/blocs/checkout/checkout_bloc.dart';
 import 'package:flutter_test_application/models/payment_method_model.dart';
 import 'package:flutter_test_application/screens/card/card_form_screen.dart';
@@ -21,190 +22,181 @@ class CheckoutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: const CustomAppBar(title: 'Checkout'),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.white,
-        child: BlocBuilder<CheckoutBloc, CheckoutState>(
-          builder: (context, state) {
-            if (state is CheckoutLoading) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (state is CheckoutLoaded) {
-              if (Platform.isAndroid) {
-                switch (state.paymentMethod) {
-                  case PaymentMethod.google_pay:
-                    print("alii");
-                    return GooglePay(
-                      products: state.products!,
-                      total: state.total!,
-                    );
-                  case PaymentMethod.credit_card:
-                    print("6886896969");
-                    return CardFormScreen(
-                      total: state.total!,
-                    );
-                  default:
-                    return GooglePay(
-                      products: state.products!,
-                      total: state.total!,
-                    );
-                }
-              } else if (Platform.isIOS) {
-                switch (state.paymentMethod) {
-                  case PaymentMethod.apple_pay:
-                    return ApplePay(
-                        total: state.total!, products: state.products!);
-                  case PaymentMethod.credit_card:
-                    return Container();
-
-                  default:
-                    return GooglePay(
-                        total: state.total!, products: state.products!);
-                }
-              } else {
-                return ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/payment-selection');
-                  },
-                  child: Text('CHOOSE PAYMENT'),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(10.0),
+          child: BlocBuilder<CheckoutBloc, CheckoutState>(
+            builder: (context, state) {
+              if (state is CheckoutLoading) {
+                return Center(
+                  child: CircularProgressIndicator(),
                 );
               }
-              /*return Container(
-                height: 70,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              if (state is CheckoutLoaded) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white),
-                      onPressed: () {
-                        context
-                            .read<CheckoutBloc>()
-                            .add(ConfirmCheckout(checkout: state.checkout));
-                        Navigator.pushNamed(context, '/order-confirmation');
-                      },
-                      child: const Text('OrderNow',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold)),
+                    Text(
+                      'Customer Information',
+                      style: GoogleFonts.sora(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 22,
+                      ),
                     ),
-                  ],
-                ),
-              );*/
-            } else {
-              return Text('Something went  Wrong');
-            }
-          },
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: BlocBuilder<CheckoutBloc, CheckoutState>(
-          builder: (context, state) {
-            if (state is CheckoutLoading) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (state is CheckoutLoaded) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Customer Information',
-                    style: Theme.of(context).textTheme.headline5?.copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 22,
+                    const SizedBox(height: 8),
+                    _buildTextFormField((value) {
+                      context
+                          .read<CheckoutBloc>()
+                          .add(UpdateCheckout(fullName: value));
+                    }, context, 'FullName'),
+                    const SizedBox(height: 8),
+                    _buildTextFormField((value) {
+                      context
+                          .read<CheckoutBloc>()
+                          .add(UpdateCheckout(phone: value));
+                    }, context, 'Phone'),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Delivery Information',
+                      style: GoogleFonts.sora(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 22,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    _buildTextFormField((value) {
+                      context
+                          .read<CheckoutBloc>()
+                          .add(UpdateCheckout(address: value));
+                    }, context, 'Address'),
+                    const SizedBox(height: 8),
+                    _buildTextFormField((value) {
+                      context
+                          .read<CheckoutBloc>()
+                          .add(UpdateCheckout(city: value));
+                    }, context, 'City'),
+                    const SizedBox(height: 8),
+                    _buildTextFormField((value) {
+                      context
+                          .read<CheckoutBloc>()
+                          .add(UpdateCheckout(district: value));
+                    }, context, 'District'),
+                    const SizedBox(height: 8),
+                    _buildTextFormField((value) {
+                      context
+                          .read<CheckoutBloc>()
+                          .add(UpdateCheckout(zipCode: value));
+                    }, context, 'Zip'),
+                    const SizedBox(height: 20),
+                    Container(
+                      height: 60,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Color(0xFF8E44AD),
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      ),
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            '/payment-selection',
+                          );
+                        },
+                        child: Text(
+                          'SELECT A PAYMENT METHOD',
+                          style: GoogleFonts.sora(
+                            textStyle: TextStyle(color: Colors.white),
+                          ),
                         ),
-                  ),
-                  _buildTextFormField((value) {
-                    context
-                        .read<CheckoutBloc>()
-                        .add(UpdateCheckout(fullName: value));
-                  }, context, 'FullName'),
-                  _buildTextFormField((value) {
-                    context
-                        .read<CheckoutBloc>()
-                        .add(UpdateCheckout(phone: value));
-                  }, context, 'Phone'),
-                  Text(
-                    'Delivey Information',
-                    style: Theme.of(context).textTheme.headline5?.copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 22,
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
                         ),
-                  ),
-                  _buildTextFormField((value) {
-                    context
-                        .read<CheckoutBloc>()
-                        .add(UpdateCheckout(address: value));
-                  }, context, 'Address'),
-                  _buildTextFormField((value) {
-                    context
-                        .read<CheckoutBloc>()
-                        .add(UpdateCheckout(city: value));
-                  }, context, 'City'),
-                  _buildTextFormField((value) {
-                    context
-                        .read<CheckoutBloc>()
-                        .add(UpdateCheckout(district: value));
-                  }, context, 'District'),
-                  _buildTextFormField((value) {
-                    context
-                        .read<CheckoutBloc>()
-                        .add(UpdateCheckout(zipCode: value));
-                  }, context, 'Zip'),
-                  Container(
-                    height: 60,
-                    alignment: Alignment.bottomCenter,
-                    decoration: BoxDecoration(color: Colors.black),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Center(
-                          child: TextButton(
-                            onPressed: () {
-                              Navigator.pushNamed(
-                                context,
-                                '/payment-selection',
-                              );
-                            },
-                            child: Text(
-                              'SELECT A PAYMENT METHOD',
-                              style: TextStyle(color: Colors.white),
+                        border: Border(
+                          top: BorderSide(
+                            color: Color(0xFF8E44AD),
+                            width: 2.0,
+                          ),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Order Summary',
+                              style: GoogleFonts.sora(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
                             ),
-                          ),
+                            const SizedBox(height: 10),
+                            OrderSummary(),
+                            const SizedBox(height: 10),
+                            if (Platform.isAndroid) ...[
+                              if (state.paymentMethod ==
+                                  PaymentMethod.google_pay)
+                                GooglePay(
+                                  products: state.products!,
+                                  total: state.total!,
+                                )
+                              else if (state.paymentMethod ==
+                                  PaymentMethod.credit_card)
+                                CardFormScreen(total: state.total!)
+                              else
+                                GooglePay(
+                                  products: state.products!,
+                                  total: state.total!,
+                                ),
+                            ] else if (Platform.isIOS) ...[
+                              if (state.paymentMethod ==
+                                  PaymentMethod.apple_pay)
+                                ApplePay(
+                                  total: state.total!,
+                                  products: state.products!,
+                                )
+                              else if (state.paymentMethod ==
+                                  PaymentMethod.credit_card)
+                                Container()
+                              else
+                                GooglePay(
+                                  total: state.total!,
+                                  products: state.products!,
+                                ),
+                            ] else ...[
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, '/payment-selection');
+                                },
+                                child: Text('CHOOSE PAYMENT'),
+                              ),
+                            ],
+                          ],
                         ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.arrow_forward,
-                            color: Colors.white,
-                          ),
-                        )
-                      ],
+                      ),
                     ),
-                  ),
-                  Text(
-                    'Order Summary',
-                    style: Theme.of(context).textTheme.headline5?.copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 22,
-                        ),
-                  ),
-                  OrderSummary(),
-                ],
-              );
-            } else {
-              return Text('something wrong');
-            }
-          },
+                    const SizedBox(height: 10), // Adjust bottom space as needed
+                  ],
+                );
+              } else {
+                return Center(
+                  child: Text('Something went wrong'),
+                );
+              }
+            },
+          ),
         ),
       ),
+      resizeToAvoidBottomInset: true,
     );
   }
 
@@ -219,18 +211,25 @@ class CheckoutScreen extends StatelessWidget {
         children: [
           SizedBox(
             width: 75,
-            child:
-                Text(labelText, style: Theme.of(context).textTheme.bodyText1),
+            child: Text(
+              labelText,
+              style: GoogleFonts.sora(
+                fontSize: 14, // Adjust font size as needed
+              ),
+            ),
           ),
           Expanded(
-              child: TextFormField(
-            onChanged: onChanged,
-            decoration: InputDecoration(
+            child: TextFormField(
+              onChanged: onChanged,
+              decoration: InputDecoration(
                 isDense: true,
                 contentPadding: const EdgeInsets.only(left: 10),
                 focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black))),
-          ))
+                  borderSide: BorderSide(color: Colors.black),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );

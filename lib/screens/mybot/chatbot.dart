@@ -1,9 +1,9 @@
 import 'dart:convert';
-
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ChatBot extends StatefulWidget {
   const ChatBot({Key? key}) : super(key: key);
@@ -96,31 +96,64 @@ class _ChatBotState extends State<ChatBot> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat Bot'),
+        title: Text('Chat Bot', style: GoogleFonts.sora()),
       ),
-      body: DashChat(
-        typingUsers: typing,
-        currentUser: mySelf,
-        onSend: (ChatMessage message) {
-          allMessages.insert(0, message);
-          String userInput = message.text.trim().toUpperCase();
-          print("User input: $userInput");
-          print("Categories: $categories");
+      body: Container(
+        color: Colors.white, // Background color
+        child: DashChat(
+          typingUsers: typing,
+          currentUser: mySelf,
+          onSend: (ChatMessage message) {
+            allMessages.insert(0, message);
+            String userInput = message.text.trim().toUpperCase();
+            print("User input: $userInput");
+            print("Categories: $categories");
 
-          if (categories.contains(userInput)) {
-            getBookRecommendations(userInput);
-          } else {
-            ChatMessage errorMessage = ChatMessage(
-              text:
-                  'Please choose one of the listed categories: ${categories.join(', ')}',
-              user: bot,
-              createdAt: DateTime.now(),
-            );
-            allMessages.insert(0, errorMessage);
-            setState(() {});
-          }
-        },
-        messages: allMessages,
+            if (categories.contains(userInput)) {
+              getBookRecommendations(userInput);
+            } else {
+              ChatMessage errorMessage = ChatMessage(
+                text:
+                    'Please choose one of the listed categories: ${categories.join(', ')}',
+                user: bot,
+                createdAt: DateTime.now(),
+              );
+              allMessages.insert(0, errorMessage);
+              setState(() {});
+            }
+          },
+          messages: allMessages,
+          inputOptions: InputOptions(
+            inputDecoration: InputDecoration(
+              hintText: 'Write a message...',
+              hintStyle: GoogleFonts.sora(),
+              filled: true,
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20),
+                borderSide: BorderSide(
+                  color: Colors.purple, // Border color
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20),
+                borderSide: BorderSide(
+                  color: Colors.purple, // Border color
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20),
+                borderSide: BorderSide(
+                  color: Colors.deepPurple, // Border color when focused
+                ),
+              ),
+            ),
+          ),
+          messageOptions: MessageOptions(
+            currentUserContainerColor: const Color(0xFF8E44AD),
+            currentUserTextColor: Colors.white,
+          ),
+        ),
       ),
     );
   }

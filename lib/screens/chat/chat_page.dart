@@ -24,6 +24,7 @@ class _ChatPageState extends State<ChatPage> {
   final TextEditingController _messageController = TextEditingController();
   final ChatService _chatService = ChatService();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
   void sendMessage() async {
     if (_messageController.text.isNotEmpty) {
       await _chatService.sendMessage(
@@ -113,11 +114,12 @@ class _ChatPageState extends State<ChatPage> {
           children: [
             Text(
               data['senderEmail'],
+              style: TextStyle(color: Colors.grey[600], fontSize: 12),
             ),
             const SizedBox(height: 5),
             ChatBuble(
               message: data['message'],
-            )
+            ),
           ],
         ),
       ),
@@ -127,11 +129,11 @@ class _ChatPageState extends State<ChatPage> {
   Widget _buildMessageInput() {
     return SingleChildScrollView(
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 8.0),
-        padding: EdgeInsets.all(8.0),
+        margin: const EdgeInsets.symmetric(horizontal: 8.0),
+        padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.0),
-          color: Colors.grey[200], // Arka plan rengi
+          color: const Color(0xFF8E44AD),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -140,20 +142,22 @@ class _ChatPageState extends State<ChatPage> {
               child: TextField(
                 controller: _messageController,
                 obscureText: false,
-                decoration: InputDecoration(
+                style: const TextStyle(color: Colors.white),
+                decoration: const InputDecoration(
                   hintText: "Enter message",
-                  border: InputBorder.none, // Kenarlık yok
+                  hintStyle: TextStyle(color: Colors.white70),
+                  border: InputBorder.none,
                 ),
               ),
             ),
             IconButton(
               onPressed: sendMessage,
-              icon: Icon(
-                Icons.arrow_upward,
-                size: 40,
-                color: Colors.blue, // Gönderme ikonunun rengi
+              icon: const Icon(
+                Icons.send,
+                size: 30,
+                color: Colors.white,
               ),
-            )
+            ),
           ],
         ),
       ),

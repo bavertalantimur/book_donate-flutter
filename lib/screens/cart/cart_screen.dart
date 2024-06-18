@@ -95,7 +95,7 @@ class CartScreen extends StatelessWidget {
                     ),
                     border: Border(
                       top: BorderSide(
-                        color: Color(0xFF8E44AD), // Gri renkte bir üst border
+                        color: Color(0xFF8E44AD),
                         width: 2.0,
                       ),
                     ),

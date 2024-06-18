@@ -57,6 +57,7 @@ dependencies:
   dash_chat_2: ^0.0.20
   flutter_launcher_icons: ^0.13.1
   google_fonts: ^6.2.0
+  flare_flutter: ^3.0.2
   
   
 
