@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test_application/blocs/cart/cart_bloc.dart';
+import 'package:flutter_test_application/screens/form/book_form_screen.dart';
 import 'package:flutter_test_application/screens/mybot/chatbot.dart';
 import 'package:flutter_test_application/screens/screens.dart';
 import 'package:flutter_test_application/widgets/custom_appbar.dart';
@@ -166,50 +167,69 @@ class ProductScreen extends StatelessWidget {
           Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
-            child: AnimatedExpansionTile(
-              title: Row(
-                children: [
-                  Image.asset(
-                    'images/book.png',
-                    width: 32,
-                    height: 32,
-                    color: Colors.white,
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    'Book Information',
-                    style: GoogleFonts.sora(
-                      textStyle: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 18,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            child: Column(
               children: [
-                ListTile(
-                  title: Text(
-                    product.description,
-                    style: GoogleFonts.sora(
-                      textStyle: TextStyle(
-                        fontSize: 16,
+                AnimatedExpansionTile(
+                  title: Row(
+                    children: [
+                      Image.asset(
+                        'images/book.png',
+                        width: 32,
+                        height: 32,
                         color: Colors.white,
                       ),
+                      SizedBox(width: 10),
+                      Text(
+                        'Book Information',
+                        style: GoogleFonts.sora(
+                          textStyle: TextStyle(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 18,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  children: [
+                    ListTile(
+                      title: Text(
+                        product.description,
+                        style: GoogleFonts.sora(
+                          textStyle: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
                     ),
+                  ],
+                  tilePadding:
+                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+                  expandedCrossAxisAlignment: CrossAxisAlignment.start,
+                  collapsedBackgroundColor: Color(0xFF8E44AD), // Darker purple
+                  expandedBackgroundColor:
+                      Color.fromARGB(255, 162, 79, 198), // Lighter purple
+                  expandedAlignment: Alignment.centerLeft,
+                  backgroundColor: Colors.white,
+                  childrenPadding: EdgeInsets.all(10.0),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BookFormScreen(),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    'Sell Second-Hand Book',
+                    style: GoogleFonts.sora(),
                   ),
                 ),
               ],
-              tilePadding:
-                  EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-              expandedCrossAxisAlignment: CrossAxisAlignment.start,
-              collapsedBackgroundColor: Color(0xFF8E44AD), // Daha koyu mor
-              expandedBackgroundColor:
-                  Color.fromARGB(255, 162, 79, 198), // Daha açık mor
-              expandedAlignment: Alignment.centerLeft,
-              backgroundColor: Colors.white,
-              childrenPadding: EdgeInsets.all(10.0),
             ),
           ),
         ],
