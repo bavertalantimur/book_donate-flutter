@@ -25,6 +25,9 @@ class ProductCard extends StatelessWidget {
         Navigator.pushNamed(context, '/product', arguments: product);
       },
       child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Container(
             width: widthValue,
@@ -38,81 +41,79 @@ class ProductCard extends StatelessWidget {
             ),
           ),
           Container(
-            width: widthValue - 10 - leftPosition,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    product.name,
-                    style: GoogleFonts.sora(
-                      color: Color(0xFF242424),
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
+            width: widthValue,
+            padding: const EdgeInsets.symmetric(
+                vertical: 8.0, horizontal: 4.0), // Adjust padding
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment:
+                  CrossAxisAlignment.center, // Align text to center
+              children: [
+                Text(
+                  product.name,
+                  textAlign: TextAlign.center, // Center align the text
+                  style: GoogleFonts.sora(
+                    color: Color(0xFF242424),
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                SizedBox(height: 6),
+                Row(
+                  mainAxisAlignment:
+                      MainAxisAlignment.center, // Center align the row
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      '\$${product.price}',
+                      style: GoogleFonts.sora(
+                        color: Color(0xFF050505),
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 6),
-                  Row(
-                    children: [
-                      Text(
-                        '\$${product.price}',
-                        style: GoogleFonts.sora(
-                          color: Color(0xFF050505),
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      Spacer(),
-                      BlocBuilder<CartBloc, CartState>(
-                        builder: (context, state) {
-                          if (state is CartLoading) {
-                            return Center(child: CircularProgressIndicator());
-                          }
-                          if (state is CartLoaded) {
-                            return Container(
-                              width: 30,
-                              height: 30,
-                              decoration: BoxDecoration(
-                                color: Color(0xFF8E44AD), // Nice pastel purple
-                                borderRadius: BorderRadius.circular(8),
+                    SizedBox(
+                        width:
+                            20), // Adjust the spacing between price and button
+                    BlocBuilder<CartBloc, CartState>(
+                      builder: (context, state) {
+                        if (state is CartLoading) {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                        if (state is CartLoaded) {
+                          return Container(
+                            width: 30,
+                            height: 30,
+                            decoration: BoxDecoration(
+                              color: Color(0xFF8E44AD), // Nice pastel purple
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: IconButton(
+                              padding: EdgeInsets.zero,
+                              icon: Icon(
+                                Icons.add,
+                                color: Colors.white,
+                                size: 18,
                               ),
-                              child: IconButton(
-                                padding: EdgeInsets.zero,
-                                icon: Icon(
-                                  Icons.add,
-                                  color: Colors.white,
-                                  size: 18,
-                                ),
-                                onPressed: () {
-                                  context
-                                      .read<CartBloc>()
-                                      .add(CartProductAdded(product));
-                                  final snackBar = SnackBar(
-                                      content: Text('Added to your Cart'));
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(snackBar);
-                                },
-                              ),
-                            );
-                          } else {
-                            return Text('Something went wrong');
-                          }
-                        },
-                      ),
-                      if (isWishList)
-                        IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.delete,
-                            color: Colors.white,
-                          ),
-                        ),
-                    ],
-                  ),
-                ],
-              ),
+                              onPressed: () {
+                                context
+                                    .read<CartBloc>()
+                                    .add(CartProductAdded(product));
+                                final snackBar = SnackBar(
+                                    content: Text('Added to your Cart'));
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
+                              },
+                            ),
+                          );
+                        } else {
+                          return Text('Something went wrong');
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ],

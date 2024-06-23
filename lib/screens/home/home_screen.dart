@@ -84,15 +84,7 @@ class HomeScreen extends StatelessWidget {
             ),
 
             SectionTitle(title: 'Most Popular'),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ChatBot()),
-                );
-              },
-              child: Text('Kitap Öner'),
-            ),
+
             BlocBuilder<ProductBloc, ProductState>(
               builder: (context, state) {
                 if (state is ProductLoading) {

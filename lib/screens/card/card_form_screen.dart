@@ -42,15 +42,9 @@ class _CardFormScreenState extends State<CardFormScreen> {
   void displayPaymentSheet() async {
     try {
       await Stripe.instance.presentPaymentSheet();
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => OrderConfirmation(),
-        ),
-      );
-      print("Payment successful");
+      print("Done");
     } catch (e) {
-      print("Failed to present payment sheet: $e");
+      print("Failed");
     }
   }
 

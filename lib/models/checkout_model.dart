@@ -12,18 +12,28 @@ class Checkout extends Equatable {
   final String? subtotal;
   final String? deliveryFee;
   final String? total;
+  final bool isAccepted;
+  final bool isCancelled;
+  final bool isDelivered;
+  final DateTime createdAt;
 
-  Checkout(
-      {required this.fullName,
-      required this.phone,
-      required this.address,
-      required this.city,
-      required this.district,
-      required this.zipCode,
-      required this.products,
-      required this.subtotal,
-      required this.deliveryFee,
-      required this.total});
+  Checkout({
+    required this.fullName,
+    required this.phone,
+    required this.address,
+    required this.city,
+    required this.district,
+    required this.zipCode,
+    required this.products,
+    required this.subtotal,
+    required this.deliveryFee,
+    required this.total,
+    this.isAccepted = false,
+    this.isCancelled = false,
+    this.isDelivered = false,
+    DateTime? createdAt, // Nullable to allow auto-assignment
+  }) : createdAt =
+            createdAt ?? DateTime.now(); // Default to now if not provided
 
   @override
   List<Object?> get props => [
@@ -37,14 +47,19 @@ class Checkout extends Equatable {
         subtotal,
         deliveryFee,
         total,
+        isAccepted,
+        isCancelled,
+        isDelivered,
+        createdAt,
       ];
 
   Map<String, Object> toDocument() {
-    Map customerAddress = Map();
-    customerAddress['address'] = address;
-    customerAddress['city'] = city;
-    customerAddress['district'] = district;
-    customerAddress['zipCode'] = zipCode;
+    Map<String, String?> customerAddress = {
+      'address': address,
+      'city': city,
+      'district': district,
+      'zipCode': zipCode,
+    };
     return {
       'customerAddress': customerAddress,
       'customerName': fullName!,
@@ -52,7 +67,12 @@ class Checkout extends Equatable {
       'products': products!.map((product) => product.name).toList(),
       'subtotal': subtotal!,
       'deliveryFee': deliveryFee!,
-      'total': total!
+      'total': total!,
+      'isAccepted': isAccepted,
+      'isCancelled': isCancelled,
+      'isDelivered': isDelivered,
+      'createdAt': createdAt,
+      
     };
   }
 }

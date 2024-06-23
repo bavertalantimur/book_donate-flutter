@@ -35,14 +35,17 @@ class CatalogScreen extends StatelessWidget {
                   const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: 1.15,
+                childAspectRatio: 0.75, // Adjusted aspect ratio
               ),
               itemCount: snapshot.data!.length,
               itemBuilder: (BuildContext context, int index) {
                 return Center(
-                  child: ProductCard(
-                    product: snapshot.data![index],
-                    widthFactor: 2.2,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0), // Added padding
+                    child: ProductCard(
+                      product: snapshot.data![index],
+                      widthFactor: 2.2,
+                    ),
                   ),
                 );
               },

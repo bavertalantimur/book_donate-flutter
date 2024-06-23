@@ -1,12 +1,10 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test_application/blocs/cart/cart_bloc.dart';
+import 'package:flutter_test_application/screens/chat/chat_screen.dart';
 import 'package:flutter_test_application/screens/form/book_form_screen.dart';
 import 'package:flutter_test_application/screens/mybot/chatbot.dart';
-import 'package:flutter_test_application/screens/screens.dart';
 import 'package:flutter_test_application/widgets/custom_appbar.dart';
-import 'package:flutter_test_application/widgets/hero_carousel_card.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../models/product_model.dart';
 
@@ -76,6 +74,19 @@ class ProductScreen extends StatelessWidget {
                   height: 38,
                 ),
               ),
+              IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => BookFormScreen()),
+                  );
+                },
+                icon: Image.asset(
+                  'images/contact-form.png',
+                  width: 34,
+                  height: 34,
+                ),
+              ),
               BlocBuilder<CartBloc, CartState>(
                 builder: (context, state) {
                   return ElevatedButton.icon(
@@ -122,18 +133,13 @@ class ProductScreen extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          CarouselSlider(
-            options: CarouselOptions(
-              aspectRatio: 1.5,
-              viewportFraction: 0.9,
-              enlargeCenterPage: true,
-              enlargeStrategy: CenterPageEnlargeStrategy.height,
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Image.network(
+              product.imageUrl, // Use the product's image URL
+              fit: BoxFit.contain,
+              height: 500,
             ),
-            items: [
-              HeroCarouselCard(
-                product: product,
-              ),
-            ],
           ),
           Padding(
             padding:
@@ -213,21 +219,6 @@ class ProductScreen extends StatelessWidget {
                   expandedAlignment: Alignment.centerLeft,
                   backgroundColor: Colors.white,
                   childrenPadding: EdgeInsets.all(10.0),
-                ),
-                SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BookFormScreen(),
-                      ),
-                    );
-                  },
-                  child: Text(
-                    'Sell Second-Hand Book',
-                    style: GoogleFonts.sora(),
-                  ),
                 ),
               ],
             ),
